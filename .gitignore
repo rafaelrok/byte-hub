@@ -1,20 +1,20 @@
-backend/HELP.md
-backend/target/
+!backend/HELP.md
+!backend/target/
 !backend/.mvn/wrapper/maven-wrapper.jar
-!**backend/src/main/**/target/
-!**backend/src/test/**/target
+!backend/src/main/**/target/
+!backend/src/test/**/target
 
-!**backend/src/main/resources/application.properties
-!**backend/src/main/resources/application-dev.properties
+!backend/src/main/resources/application.properties
+!backend/src/main/resources/application-dev.properties
 
 ### STS ###
-backend.apt_generated
-backend.classpath
-backend.factorypath
-backend.project
-backend.settings
-backend.springBeans
-backend.sts4-cache
+backend/.apt_generated
+backend/.classpath
+backend/.factorypath
+backend/.project
+backend/.settings
+backend/.springBeans
+backend/.sts4-cache
 
 ### IntelliJ IDEA ###
 .idea
@@ -23,35 +23,35 @@ backend.sts4-cache
 *.ipr
 
 ### NetBeans ###
-backend/nbproject/private/
-backend/nbbuild/
-backend/dist/
-backend/nbdist/
-backend/.nb-gradle/
-backend/build/
-!**backend/src/main/**/build/
-!**backend/src/test/**/build/
+!backend/nbproject/private/
+!backend/nbbuild/
+!backend/dist/
+!backend/nbdist/
+!backend/.nb-gradle/
+!backend/build/
+!backend/src/main/**/build/
+!backend/src/test/**/build/
 
 ### VS Code ###
-frontend/.vscode/
+!frontend/.vscode/
 
 # dependencies
-frontend/node_modules
-frontend/.pnp
-frontend/.pnp.js
+!frontend/node_modules
+!frontend/.pnp
+!frontend/.pnp.js
 
 # testing
-frontend/coverage
+!frontend/coverage
 
 # production
-frontend/build
+!frontend/build
 
 # misc
-frontend/.DS_Store
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
+!frontend/.DS_Store
+!frontend/.env.local
+!frontend/.env.development.local
+!frontend/.env.test.local
+!frontend/.env.production.local
 
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
+!frontend/npm-debug.log*
+!frontend/yarn-debug.log*
