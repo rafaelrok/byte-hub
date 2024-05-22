@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ByteHubApplication {
+public class byteHubApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ByteHubApplication.class, args);
+        SpringApplication.run(byteHubApplication.class, args);
     }
 
 }
