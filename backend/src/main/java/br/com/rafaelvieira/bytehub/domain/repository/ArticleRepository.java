@@ -5,6 +5,7 @@ import br.com.rafaelvieira.bytehub.domain.model.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
     Optional<Article> findBySlug(String slug);
     List<Article> findAllByAuthorIn(List<Profile> profiles, Pageable pageable);
 
+    @Query("SELECT a FROM Article a WHERE a.author = :profile")
+    Optional<Article> findByAuthor(Profile profile);
 }

@@ -22,6 +22,9 @@ backend/.sts4-cache
 *.iml
 *.ipr
 
+/Qodana.key
+/.env
+
 ### NetBeans ###
 !backend/nbproject/private/
 !backend/nbbuild/

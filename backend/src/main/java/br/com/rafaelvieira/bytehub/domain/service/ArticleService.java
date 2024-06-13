@@ -41,6 +41,11 @@ public class ArticleService {
         return repository.findAllByAuthorIn(followedUsers, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Article findByAuthor(Profile profile) {
+        return repository.findByAuthor(profile).orElseThrow(ArticleNotFoundException::new);
+    }
+
     @Transactional
     public Article save(Article article, Profile profile, List<Tag> tags) {
         addAllTags(article, tags);

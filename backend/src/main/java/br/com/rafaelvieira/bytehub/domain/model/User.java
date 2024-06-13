@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
-
 @Data
 @Entity
 @Builder
@@ -26,6 +25,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Profile profile;
+
 
     @Override
     public final boolean equals(Object o) {
