@@ -7,6 +7,8 @@
 !backend/src/main/resources/application.properties
 !backend/src/main/resources/application-dev.properties
 
+node_modules
+
 ### STS ###
 backend/.apt_generated
 backend/.classpath
