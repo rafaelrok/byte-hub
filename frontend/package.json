@@ -45,7 +45,7 @@
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
     "insane": "^2.6.2",
-    "marked": "^12.0.0",
+    "marked": "^13.0.2",
     "pinia": "^2.1.7",
     "pnpm": "^9.1.2",
     "popper.js": "^1.16.1",
