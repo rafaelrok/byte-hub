@@ -1,6 +1,5 @@
 package br.com.rafaelvieira.bytehub.api.model.notification.like;
 
-
 import br.com.rafaelvieira.bytehub.api.model.article.ArticleResponse;
 import br.com.rafaelvieira.bytehub.api.model.profile.ProfileResponse;
 import br.com.rafaelvieira.bytehub.api.model.user.UserResponse;
