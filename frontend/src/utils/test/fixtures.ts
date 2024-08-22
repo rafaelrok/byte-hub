@@ -9,6 +9,7 @@ const author: Profile = {
 
 const user: User = {
   ...author,
+  id: 1,
   email: 'foo@example.com',
   token: '',
 }
