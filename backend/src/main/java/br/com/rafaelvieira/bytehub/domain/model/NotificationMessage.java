@@ -27,6 +27,9 @@ public class NotificationMessage {
     private Long targetProfileId;
     private Long articleId;
     private String sendUsername;
+    private boolean reading = false;
+
+    @Enumerated(EnumType.STRING)
     private NotificationType type;
 
     @ManyToOne

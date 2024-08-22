@@ -2,10 +2,7 @@ package br.com.rafaelvieira.bytehub.domain.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +13,7 @@ import java.util.Set;
 @Data
 @Entity
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "articles")
@@ -42,9 +40,11 @@ public class Article {
     private Profile author;
 
     @ManyToMany(mappedBy = "articles", cascade = CascadeType.DETACH)
+    @ToString.Exclude
     private Set<Profile> favorites = new HashSet<>();
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    @ToString.Exclude
     private Set<Comment> comments = new HashSet<>();
 
     private int favoritesCount = 0;

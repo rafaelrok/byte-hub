@@ -8,6 +8,7 @@ import br.com.rafaelvieira.bytehub.domain.model.Article;
 import br.com.rafaelvieira.bytehub.domain.model.NotificationMessage;
 import br.com.rafaelvieira.bytehub.domain.model.Profile;
 import br.com.rafaelvieira.bytehub.domain.model.User;
+import br.com.rafaelvieira.bytehub.domain.repository.NotificationMessageRepository;
 import br.com.rafaelvieira.bytehub.domain.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final NotificationServiceFollow notificationServiceFollow;
     private final NotificationServiceLike notificationServiceLike;
+    private final NotificationMessageRepository notificationMessageRepository;
 
     @Transactional(readOnly = true)
     public Profile getByUsername(String username) {
@@ -54,6 +56,25 @@ public class ProfileService {
                 .build();
     }
 
+//    @Transactional
+//    public void follow(Profile current, Profile toFollow) {
+//        LOG.info("User {} is following {}", current.getId(), toFollow.getId());
+//        current.followProfile(toFollow);
+//        profileRepository.save(current);
+//
+//        NotificationMessageFollowDTO notification = NotificationMessageFollowDTO.builder()
+//                .followerId(current.getId())
+//                .followedId(toFollow.getId())
+//                .username(toFollow.getUsername())
+//                .type(NotificationType.FOLLOW)
+//                .build();
+//
+//        NotificationMessage notificationFollow = notificationServiceFollow.convertToDto(notification);
+//        toFollow.getNotifications().add(notificationFollow);
+//        profileRepository.save(toFollow);
+//        notificationServiceFollow.saveAndPublishFollowNotification(notification);
+//    }
+
     @Transactional
     public void follow(Profile current, Profile toFollow) {
         LOG.info("User {} is following {}", current.getId(), toFollow.getId());
@@ -63,22 +84,60 @@ public class ProfileService {
         NotificationMessageFollowDTO notification = NotificationMessageFollowDTO.builder()
                 .followerId(current.getId())
                 .followedId(toFollow.getId())
-                .username(toFollow.getUsername())
+                .username(current.getUsername())
                 .type(NotificationType.FOLLOW)
                 .build();
 
-        NotificationMessage notificationFollow = notificationServiceFollow.convertToDto(notification);
-        toFollow.getNotifications().add(notificationFollow);
-        profileRepository.save(toFollow);
+        // Salva e publica a notificação. Este método deve retornar a notificação persistida.
         notificationServiceFollow.saveAndPublishFollowNotification(notification);
-    }
 
+        // Supondo que saveAndPublishFollowNotification agora retorna NotificationMessage persistido
+        NotificationMessage notificationFollow = notificationServiceFollow.getNotificationMessage(notification);
+
+        // Adiciona a notificação persistida à lista de notificações do perfil seguido
+        if (notificationFollow != null) {
+            toFollow.getNotifications().add(notificationFollow);
+        }
+
+        profileRepository.save(toFollow);
+    }
 
     @Transactional
     public void unfollow(Profile current, Profile toFollow) {
         current.unfollowProfile(toFollow);
         profileRepository.save(current);
+
+        // Busca e apaga a notificação de follow mais recente
+        notificationMessageRepository.findFirstBySourceProfileIdAndTargetProfileId(current.getId(), toFollow.getId())
+                .ifPresent(notificationMessageRepository::delete);
     }
+
+//    @Transactional
+//    public void unfollow(Profile current, Profile toFollow) {
+//        current.unfollowProfile(toFollow);
+//        profileRepository.save(current);
+//    }
+
+//    @Transactional
+//    public Profile favorite(Profile profile, Article article) {
+//        LOG.info("User {} is favorite {}", profile.getId(), article.getId());
+//        profile.favoriteArticle(article);
+//        profileRepository.save(profile);
+//
+//        NotificationMessageLikeDTO notificationLikeDTO = NotificationMessageLikeDTO.builder()
+//                .profileId(profile.getId())
+//                .articleId(article.getId())
+//                .username(profile.getUsername())
+//                .type(NotificationType.LIKE)
+//                .build();
+//
+//        NotificationMessage notificationLike = notificationServiceLike.convertToDto(notificationLikeDTO);
+//        article.getAuthor().getNotifications().add(notificationLike);
+//        articleService.save(article);
+//        notificationServiceLike.saveAndPublishLikeNotification(notificationLikeDTO);
+//
+//        return profile;
+//    }
 
     @Transactional
     public Profile favorite(Profile profile, Article article) {
@@ -93,10 +152,18 @@ public class ProfileService {
                 .type(NotificationType.LIKE)
                 .build();
 
-        NotificationMessage notificationLike = notificationServiceLike.convertToDto(notificationLikeDTO);
-        article.getAuthor().getNotifications().add(notificationLike);
-        articleService.save(article);
+        // Salva e publica a notificação. Este método deve retornar a notificação persistida.
         notificationServiceLike.saveAndPublishLikeNotification(notificationLikeDTO);
+
+        // Supondo que saveAndPublishLikeNotification agora retorna NotificationMessage persistido
+        NotificationMessage notificationLike = notificationServiceLike.getNotificationMessage(notificationLikeDTO);
+
+        // Adiciona a notificação persistida à lista de notificações do autor do artigo
+        if (notificationLike != null) {
+            article.getAuthor().getNotifications().add(notificationLike);
+        }
+
+        articleService.save(article);
 
         return profile;
     }
@@ -104,6 +171,18 @@ public class ProfileService {
     @Transactional
     public Profile unfavorite(Profile profile, Article article) {
         profile.unfavoriteArticle(article);
-        return profileRepository.save(profile);
+        Profile savedProfile = profileRepository.save(profile);
+
+        // Busca e apaga todas as notificações de like relacionadas ao perfil e ao artigo
+        notificationMessageRepository.findByProfileIdAndArticleId(profile.getId(), article.getId())
+                .ifPresent(notificationMessageRepository::delete);
+
+        return savedProfile;
     }
+
+//    @Transactional
+//    public Profile unfavorite(Profile profile, Article article) {
+//        profile.unfavoriteArticle(article);
+//        return profileRepository.save(profile);
+//    }
 }

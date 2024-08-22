@@ -9,8 +9,8 @@
         >byteHub community</AppLink
       >
 
-      <ul class="nav navbar-nav pull-xs-right">
-        <li v-for="link in navLinks" :key="link.name" class="nav-item">
+      <ul class="nav navbar-nav pull-xs-right align-center">
+        <li v-for="link in navLinks" :key="link.name" class="nav-item mt-1">
           <AppLink
             class="nav-link"
             active-class="active"
@@ -28,6 +28,86 @@
           class="nav-item relative"
           ref="profileMenuWrapper"
         >
+          <div class="nav-item mr-4 mt-2 text-center">
+            <v-menu open-on-hover>
+              <template v-slot:activator="{ props }">
+                <template v-if="notificationCount > 0">
+                  <v-badge
+                    v-bind="props"
+                    :color="'error'"
+                    :content="notificationCount"
+                  >
+                    <i
+                      class="ion-email mb-1 text-2xl"
+                      @click="toggleNotificationDropdown"
+                      @mouseover="handleHover"
+                    ></i>
+                  </v-badge>
+                </template>
+                <template v-else>
+                  <i
+                    class="ion-email-unread mb-1 text-2xl"
+                    @click=""
+                    @mouseover=""
+                  ></i>
+                </template>
+              </template>
+
+              <v-card min-width="300">
+                <v-list>
+                  <v-list-item
+                    :prepend-avatar="userProfileImage"
+                    subtitle="Follow and likes"
+                    title="Notifications"
+                  ></v-list-item>
+                </v-list>
+
+                <v-divider inset></v-divider>
+
+                <v-list class="align-center items-center">
+                  <template v-if="followers.length > 0">
+                    <v-list-item
+                      prepend-icon="ion-person-add"
+                      v-for="follower in followers"
+                      :key="follower.username"
+                    >
+                      <v-list-item-title>
+                        <AppLink
+                          class="pr-4 text-gray-700 hover:bg-gray-100 text-sm"
+                          :name="'profile'"
+                          :params="{ username: follower.username }"
+                        >
+                          {{ follower.username }}
+                        </AppLink>
+                      </v-list-item-title>
+                    </v-list-item>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <AppLink
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100 no-underline text-sm"
+                        name="profile"
+                        :params="{ username: username }"
+                        @click="closeProfileMenu"
+                      >
+                        View All
+                      </AppLink>
+                      <v-btn
+                        class="text-sm"
+                        size="small"
+                        color="primary"
+                        variant="plain"
+                        @click="markAllAsRead"
+                      >
+                        Mark as read
+                      </v-btn>
+                    </v-card-actions>
+                  </template>
+                </v-list>
+              </v-card>
+            </v-menu>
+          </div>
+
           <button
             @click="toggleProfileMenu"
             class="flex items-center focus:outline-none"
@@ -35,7 +115,7 @@
             <img
               :src="userProfileImage"
               alt="User Avatar"
-              class="w-8 h-8 rounded-full"
+              class="w-8 h-8 rounded-full mt-1"
             />
           </button>
           <ul
@@ -83,12 +163,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { RouteParams } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { AppRouteNames, routerPush } from '@/router.ts'
 import { useUserStore } from '@/store/user.ts'
 import AppLink from '@/components/AppLink/AppLink.vue'
+import { useNotificationMessage } from '@/composable/useNotificationMessage.ts'
 
 interface NavLink {
   name: AppRouteNames
@@ -105,8 +186,8 @@ const username = computed(() => user.value?.username)
 const displayStatus = computed(() => (username.value ? 'authorized' : 'anonym'))
 const userProfileImage = computed(
   () => user.value?.image || 'default-avatar.png',
-) // Assumindo que há um campo de imagem no user store ou um avatar padrão
-
+)
+const userId = computed(() => user.value?.id || null)
 const allNavLinks = computed<NavLink[]>(() => [
   {
     name: 'global-feed',
@@ -142,12 +223,92 @@ const navLinks = computed(() =>
 const isProfileMenuOpen = ref(false)
 const isAuthorized = computed(() => displayStatus.value === 'authorized')
 
+/*
+ * Notifications
+ * Implementação de notificações
+ */
+const showBadge = ref(true)
+const showEmailIcon = ref(true)
+const isNotificationDropdownOpen = ref(false)
+const { updateFollowReading } = useNotificationMessage(userId.value)
+const { getNotificationMessage } = useNotificationMessage(userId.value)
+const { getTotalNotificationMessage } = useNotificationMessage(userId.value)
+const notificationMessage = ref<any>(null)
+const countFollow = ref<number>(0)
+
+const fetchNotifications = async () => {
+  if (userId.value) {
+    const follower = await getNotificationMessage()
+    const totalMessage = await getTotalNotificationMessage()
+    if (follower) {
+      notificationMessage.value = follower
+    }
+    if (totalMessage) {
+      countFollow.value = totalMessage
+    }
+  }
+}
+
+watch(
+  userId,
+  async (newUserId) => {
+    if (newUserId) {
+      await fetchNotifications()
+      await fetchUnreadNotificationCount()
+    }
+  },
+  { immediate: true },
+)
+
+const notificationCount = computed(() => countFollow.value)
+const followers = computed(() => notificationMessage.value)
+
+const toggleNotificationDropdown = async () => {
+  isNotificationDropdownOpen.value = !isNotificationDropdownOpen.value
+  showBadge.value = false
+  showEmailIcon.value = false
+}
+
+const handleHover = async () => {
+  showBadge.value = false
+  showEmailIcon.value = false
+}
+
+const markAllAsRead = async () => {
+  const notifications = await getNotificationMessage()
+  if (notifications) {
+    notificationMessage.value = notifications
+  }
+
+  for (const notification of notificationMessage.value) {
+    await updateFollowReading(notification.id)
+  }
+
+  await fetchNotifications()
+  await fetchUnreadNotificationCount()
+}
+
+const fetchUnreadNotificationCount = async () => {
+  const totalUnread = await useNotificationMessage(
+    userId.value,
+  ).getTotalNotificationMessage()
+  countFollow.value = totalUnread.count
+}
+
+/*
+ * Profile Menu
+ * Implementação do menu de perfil
+ */
 const toggleProfileMenu = () => {
   isProfileMenuOpen.value = !isProfileMenuOpen.value
 }
 
 const closeProfileMenu = () => {
   isProfileMenuOpen.value = false
+}
+
+const closeNotificationDropdown = () => {
+  isNotificationDropdownOpen.value = false
 }
 
 const handleClickOutside = (event: MouseEvent) => {
@@ -157,11 +318,19 @@ const handleClickOutside = (event: MouseEvent) => {
     !profileMenuWrapper.contains(event.target as Node)
   ) {
     closeProfileMenu()
+    closeNotificationDropdown()
   }
 }
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
+  const interval = setInterval(async () => {
+    await fetchNotifications()
+  }, 5000)
+
+  onBeforeUnmount(() => {
+    clearInterval(interval)
+  })
 })
 
 onBeforeUnmount(() => {

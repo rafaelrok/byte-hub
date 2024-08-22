@@ -421,6 +421,62 @@ paths:
           $ref: '#/components/responses/TagsResponse'
         '422':
           $ref: '#/components/responses/GenericError'
+  /notifications/follow/profile/{profileId}/total:
+    get:
+      tags:
+        - Notifications
+      summary: Get total number of followers
+      description: Get total number of followers for a profile. Auth is required
+      operationId: GetTotalFollowers
+      parameters:
+        - name: profileId
+          in: path
+          description: ID of the profile that you want to get total followers for
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Total number of followers
+          content:
+            application/json:
+              schema:
+                type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/GenericError'
+      security:
+        - Token: []
+  /notifications/follow/profile/{profileId}:
+    get:
+      tags:
+        - Notifications
+      summary: Get followers
+      description: Get followers for a profile. Auth is required
+      operationId: GetFollowers
+      parameters:
+        - name: profileId
+          in: path
+          description: ID of the profile that you want to get followers for
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Followers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/GenericError'
+      security:
+        - Token: []
 components:
   schemas:
     LoginUser:

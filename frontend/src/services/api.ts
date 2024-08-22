@@ -23,6 +23,7 @@ export interface NewUser {
 }
 
 export interface User {
+  id: number
   email: string
   token: string
   username: string
@@ -91,6 +92,27 @@ export interface GenericErrorModel {
   errors: {
     body: string[]
   }
+}
+
+export enum Type {
+  FOLLOW = 'Follow',
+  LIKE = 'Like',
+}
+
+export interface NotificationMessageFollow {
+  id: number
+  sourceProfileId: number
+  targetProfileId: number
+  sendUsername: string
+  type: Type.FOLLOW
+}
+
+export interface NotificationMessageLike {
+  sourceProfileId: number
+  targetProfileId: number
+  articleId: number
+  sendUsername: string
+  type: Type.LIKE
 }
 
 export type QueryParamsType = Record<string | number, any>
@@ -828,6 +850,101 @@ export class Api<
       >({
         path: `/tags`,
         method: 'GET',
+        ...params,
+      }),
+  }
+  notificationMessageFollow = {
+    /**
+     * @description Follow notification message
+     *
+     * @tags Notification
+     * @name NotificationMessageFollow
+     * @summary Follow notification message for profile
+     * @request POST:/notification/follow/profile/${targetProfileId}
+     */
+    getNotificationMessageFollow: (
+      targetProfileId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        {
+          notificationMessageFollow: NotificationMessageFollow
+        },
+        GenericErrorModel
+      >({
+        path: `/notifications/follow/profile/${targetProfileId}`,
+        method: 'GET',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description total Follow notification message
+     *
+     * @tags Notification
+     * @name NotificationMessageFollow
+     * @summary Follow notification message and total for profile
+     * @request GET:/notification/follow/profile/${targetProfileId}/total
+     */
+    getTotalNotificationMessageFollow: (
+      targetProfileId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        {
+          count: number
+        },
+        GenericErrorModel
+      >({
+        path: `/notifications/follow/profile/${targetProfileId}/total`,
+        method: 'GET',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Follow notification message reading
+     * @tags Notification
+     * @name NotificationMessageFollow
+     * @summary Follow notification message reading
+     * @request PUT:/notification//follow/profile/{notificationId}/read
+     */
+    updateNotificationMessageFollowReading: (
+      notificationId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        {
+          notificationMessageFollow: NotificationMessageFollow
+        },
+        GenericErrorModel
+      >({
+        path: `/notifications/follow/profile/${notificationId}/read`,
+        method: 'PUT',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Get Follow notification message reading for profile logged
+     * @tags Notification
+     * @name NotificationMessageFollow
+     * @summary Get Follow notification message reading
+     * @request GET:/notification/follow/profile/{profileId}/unread
+     */
+    getNotificationMessageFollowReading: (
+      profileId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        {
+          notificationMessageFollow: NotificationMessageFollow
+        },
+        GenericErrorModel
+      >({
+        path: `/notifications/follow/profile/${profileId}/unread`,
+        method: 'GET',
+        secure: true,
         ...params,
       }),
   }

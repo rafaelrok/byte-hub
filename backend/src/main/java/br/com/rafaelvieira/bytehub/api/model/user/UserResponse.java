@@ -12,11 +12,10 @@ import lombok.Setter;
 @JsonTypeName("user")
 public class UserResponse extends BaseResponse {
 
+    private Long id;
     private String email;
-
     private String username;
     private String bio;
     private String image;
-
     private String token;
 }

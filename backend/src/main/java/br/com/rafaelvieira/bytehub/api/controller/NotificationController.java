@@ -7,10 +7,7 @@ import br.com.rafaelvieira.bytehub.domain.service.NotificationServiceFollow;
 import br.com.rafaelvieira.bytehub.domain.service.NotificationServiceLike;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class NotificationController {
 
 
     @GetMapping("/follow/profile/{profileId}")
-    @CheckSecurity.Public.canRead
+    @CheckSecurity.Protected.canManage
     public ResponseEntity<List<NotificationMessageFollowDTO>> getNotificationsFollow(@PathVariable Long profileId) {
         List<NotificationMessageFollowDTO> notificationsFollow = serviceFollow.getNotificationsFollowForProfile(profileId);
         return ResponseEntity.ok(notificationsFollow);
@@ -38,8 +35,24 @@ public class NotificationController {
         return ResponseEntity.ok(totalCount);
     }
 
+    //responsavel por atualizar o campo reading para true
+    @PutMapping("/follow/profile/{notificationId}/read")
+    @CheckSecurity.Protected.canManage
+    public ResponseEntity<Void> markAsRead(@PathVariable Long notificationId) {
+        serviceFollow.markAsReadFollow(notificationId);
+        return ResponseEntity.ok().build();
+    }
+
+    //responsavel por retornar as notificações de follow com reading = false
+    @GetMapping("/follow/profile/{profileId}/unread")
+    @CheckSecurity.Protected.canManage
+    public ResponseEntity<List<NotificationMessageFollowDTO>> getUnreadNotificationsFollow(@PathVariable Long profileId) {
+        List<NotificationMessageFollowDTO> unreadNotificationsFollow = serviceFollow.getUnreadNotifications(profileId);
+        return ResponseEntity.ok(unreadNotificationsFollow);
+    }
+
     @GetMapping("/like/profile/{profileId}")
-    @CheckSecurity.Public.canRead
+    @CheckSecurity.Protected.canManage
     public ResponseEntity<List<NotificationMessageLikeDTO>> getNotificationsLike(@PathVariable Long profileId) {
         List<NotificationMessageLikeDTO> notificationsLike = serviceLike.getNotificationsLikeForProfile(profileId);
         return ResponseEntity.ok(notificationsLike);

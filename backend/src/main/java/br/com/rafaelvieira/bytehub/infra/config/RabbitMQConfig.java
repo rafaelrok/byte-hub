@@ -1,5 +1,6 @@
 package br.com.rafaelvieira.bytehub.infra.config;
 
+import lombok.Getter;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -15,12 +16,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String EXCHANGE_NAME = "notification_exchange";
-    public static final String FOLLOW_ROUTING_KEY = "follow";
-    public static final String LIKE_ROUTING_KEY = "like";
-    public static final String FOLLOW_QUEUE_NAME = "follow_queue";
-    public static final String LIKE_QUEUE_NAME = "like_queue";
-
     @Value("${spring.rabbitmq.host}")
     private String host;
 
@@ -33,6 +28,26 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.password}")
     private String password;
 
+    @Getter
+    @Value("${rabbitmq.exchange}")
+    private String exchangeName;
+
+    @Getter
+    @Value("${rabbitmq.routing-key.follow}")
+    private String followRoutingKey;
+
+    @Getter
+    @Value("${rabbitmq.routing-key.like}")
+    private String likeRoutingKey;
+
+    @Getter
+    @Value("${rabbitmq.queue.follow}")
+    private String followQueueName;
+
+    @Getter
+    @Value("${rabbitmq.queue.like}")
+    private String likeQueueName;
+
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(host);
@@ -44,27 +59,33 @@ public class RabbitMQConfig {
 
     @Bean
     public TopicExchange topicExchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+        return new TopicExchange(exchangeName, true, false);
     }
 
     @Bean
     public Queue followQueue() {
-        return new Queue(FOLLOW_QUEUE_NAME, false);
+        return new Queue(followQueueName, false);
     }
 
     @Bean
     public Queue likeQueue() {
-        return new Queue(LIKE_QUEUE_NAME, false);
+        return new Queue(likeQueueName, false);
     }
 
     @Bean
-    public Binding followBinding(TopicExchange topicExchange, Queue followQueue) {
-        return BindingBuilder.bind(followQueue).to(topicExchange).with(FOLLOW_ROUTING_KEY);
+    public Binding followBinding(TopicExchange topicExchange) {
+        return BindingBuilder
+                .bind(followQueue())
+                .to(topicExchange)
+                .with(followRoutingKey);
     }
 
     @Bean
-    public Binding likeBinding(TopicExchange topicExchange, Queue likeQueue) {
-        return BindingBuilder.bind(likeQueue).to(topicExchange).with(LIKE_ROUTING_KEY);
+    public Binding likeBinding(TopicExchange topicExchange) {
+        return BindingBuilder
+                .bind(likeQueue())
+                .to(topicExchange)
+                .with(likeRoutingKey);
     }
 
     @Bean

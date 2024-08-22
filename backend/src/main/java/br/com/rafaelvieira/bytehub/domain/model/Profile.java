@@ -6,6 +6,7 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.*;
 
+@ToString
 @Entity
 @Getter
 @Setter
@@ -23,6 +24,7 @@ public class Profile {
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 
     private String username;
@@ -35,6 +37,7 @@ public class Profile {
             joinColumns = @JoinColumn(name = "profile_id"),
             inverseJoinColumns = @JoinColumn(name = "following_id")
     )
+    @ToString.Exclude
     private Set<Profile> profiles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -43,9 +46,11 @@ public class Profile {
             joinColumns = @JoinColumn(name = "profile_id"),
             inverseJoinColumns = @JoinColumn(name = "article_id")
     )
+    @ToString.Exclude
     private Set<Article> articles = new HashSet<>();
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<NotificationMessage> notifications = new ArrayList<>();
 
 

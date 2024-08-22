@@ -31,3 +31,40 @@ export const useUserStore = defineStore('user', () => {
     updateUser,
   }
 })
+
+// import { computed, ref } from 'vue'
+// import { defineStore } from 'pinia'
+// import { api } from 'src/services'
+// import type { User } from 'src/services/api'
+// import Storage from 'src/utils/storage'
+//
+// export const userStorage = new Storage<User>('user')
+//
+// export const isAuthorized = (): boolean => !!userStorage.get()
+//
+// export const useUserStore = defineStore('user', () => {
+//   const user = ref<User | null>(userStorage.get() || null)
+//   console.log('Initial user value:', user.value)  // Log inicial
+//
+//   const isAuthorized = computed(() => !!user.value)
+//
+//   function updateUser(userData?: User | null) {
+//     if (userData) {
+//       console.log('Updating user with:', userData)  // Log para update
+//       userStorage.set(userData)
+//       api.setSecurityData(userData.token)
+//       user.value = userData
+//     } else {
+//       console.log('Clearing user data')  // Log para clear
+//       userStorage.remove()
+//       api.setSecurityData(null)
+//       user.value = null
+//     }
+//   }
+//
+//   return {
+//     user,
+//     isAuthorized,
+//     updateUser,
+//   }
+// })

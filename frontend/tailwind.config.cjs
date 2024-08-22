@@ -13,6 +13,8 @@ module.exports = {
       './*.js',
       './**/*.vue',
       './*.vue',
+      './node_modules/flowbite/**/*.js',
+      'node_modules/flowbite-vue/**/*.{js,jsx,ts,tsx}',
     ],
     options: {
       safelist: [],
@@ -21,6 +23,17 @@ module.exports = {
   theme: {
     colors: {
       ...colors,
+      emerald: {
+        100: '#d4f2e4',
+        200: '#a3e1c8',
+        300: '#6ed6a1',
+        400: '#39c97a',
+        500: '#28a745',
+        600: '#1f9e3f',
+        700: '#178a34',
+        800: '#147328',
+        900: '#10561e',
+      },
       primary: {
         DEFAULT: '#059669',
         light: '#06bc83',
@@ -107,6 +120,7 @@ module.exports = {
   ],
   plugins: [
     require('@tailwindcss/forms'),
+    require('flowbite/plugin'),
     plugin(function ({ addComponents, theme }) {
       const screens = theme('screens', {})
       addComponents([

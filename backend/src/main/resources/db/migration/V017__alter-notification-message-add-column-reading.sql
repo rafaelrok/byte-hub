@@ -1,0 +1,1 @@
+ALTER TABLE notification_message ADD COLUMN reading BOOLEAN NOT NULL DEFAULT FALSE;

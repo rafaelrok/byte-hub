@@ -5,6 +5,7 @@ import br.com.rafaelvieira.bytehub.domain.dto.like.NotificationMessageLikeDTO;
 import br.com.rafaelvieira.bytehub.domain.enums.NotificationType;
 import br.com.rafaelvieira.bytehub.domain.service.NotificationServiceFollow;
 import br.com.rafaelvieira.bytehub.domain.service.NotificationServiceLike;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -19,23 +20,32 @@ public class NotificationConsumer {
         this.notificationServiceLike = notificationServiceLike;
     }
 
-    @RabbitListener(queues = "follow_queue")
+    @RabbitListener(queues = "${rabbitmq.queue.follow}")
     public void handleFollowNotification(NotificationMessageFollowDTO message) {
-        if (message.getType() == NotificationType.FOLLOW) {
-            notificationServiceFollow.sendFollowNotification(
-                    message.getFollowerId(),
-                    message.getFollowedId()
-            );
+        try {
+            if (message.getType() == NotificationType.FOLLOW && message.getFollowerId() != null && message.getFollowedId() != null) {
+                new ObjectMapper().writeValueAsString(message);
+            } else {
+                throw new RuntimeException("Invalid follow notification message");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to handle follow notification", e);
         }
     }
 
-    @RabbitListener(queues = "like_queue")
+    @RabbitListener(queues = "${rabbitmq.queue.like}")
     public void handleLikeNotification(NotificationMessageLikeDTO message) {
-        if (message.getType() == NotificationType.LIKE) {
-            notificationServiceLike.sendLikeNotification(
-                    message.getProfileId(),
-                    message.getArticleId()
-            );
+        try {
+            if (message.getType() == NotificationType.LIKE) {
+                notificationServiceLike.sendLikeNotification(
+                        message.getProfileId(),
+                        message.getArticleId()
+                );
+            } else {
+                throw new RuntimeException("Invalid like notification message");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to handle like notification", e);
         }
     }
 }
