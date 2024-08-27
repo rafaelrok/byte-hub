@@ -1,5 +1,5 @@
 <template>
-  <div class="article-page pt-24">
+  <div class="article-page pt-14">
     <Suspense>
       <ArticleDetail />
       <template #fallback>

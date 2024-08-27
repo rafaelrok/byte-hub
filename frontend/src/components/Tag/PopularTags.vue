@@ -1,17 +1,19 @@
 <template>
-  <p class="font-semibold text-sm">Popular Tags</p>
+  <div class="mr-16">
+    <p class="font-semibold text-sm">Popular Tags</p>
 
-  <div class="tag-list">
-    <AppLink
-      v-for="tag in tags"
-      :key="tag"
-      name="tag"
-      :params="{ tag }"
-      :aria-label="tag"
-      class="tag-pill tag-default"
-    >
-      {{ tag }}
-    </AppLink>
+    <div class="tag-list">
+      <AppLink
+        v-for="tag in tags"
+        :key="tag"
+        name="tag"
+        :params="{ tag }"
+        :aria-label="tag"
+        class="tag-pill tag-default"
+      >
+        {{ tag }}
+      </AppLink>
+    </div>
   </div>
 </template>
 

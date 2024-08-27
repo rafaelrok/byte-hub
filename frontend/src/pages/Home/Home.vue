@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import ArticlesList from '@/components/ArticleList/ArticlesList.vue'
 import PopularTags from '@/components/Tag/PopularTags.vue'
 import Search from '@/components/Search/Search.vue'
@@ -43,8 +43,8 @@ import Search from '@/components/Search/Search.vue'
 <!--  .home-page-->
 <!--    .banner-->
 <!--      background-color: #2b2d30-->
-<!--      //text-align: center-->
-<!--      //background-size: cover-->
-<!--      //background-position: center-->
+<!--      text-align: center-->
+<!--      background-size: cover-->
+<!--      background-position: center-->
 <!--      //padding: 150px 0-->
 <!--</style>-->

@@ -64,7 +64,7 @@
       <i class="ion-trash-a" /> Delete Article
     </button>
 
-    <div class="flex pt-4">
+    <div class="flex pt-2 ml-12">
       <ul class="tag-list">
         <li
           v-for="tag in article.tagList"

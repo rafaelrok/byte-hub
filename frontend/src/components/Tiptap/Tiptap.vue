@@ -6,9 +6,11 @@
     <div
       class="flex items-center overflow-x-auto space-x-2 py-2 border-b-2 border-e-md border-gray-600"
     >
+      <!-- btn-Bold -->
       <v-btn
         @click="editor.chain().focus().toggleBold().run()"
         :disabled="!editor.can().chain().focus().toggleBold().run()"
+        class="ml-2"
         v-bind="
           buttonClass(
             editor.isActive('bold'),
@@ -17,9 +19,10 @@
         "
         :active="editor.isActive('bold')"
         icon="fas fa-bold"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-Italic -->
       <v-btn
         @click="editor.chain().focus().toggleItalic().run()"
         :disabled="!editor.can().chain().focus().toggleItalic().run()"
@@ -31,9 +34,25 @@
         "
         :active="editor.isActive('italic')"
         icon="fas fa-italic"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-Underline -->
+      <v-btn
+        @click="editor.chain().focus().toggleUnderline().run()"
+        :disabled="!editor.can().chain().focus().toggleUnderline().run()"
+        v-bind="
+          buttonClass(
+            editor.isActive('underline'),
+            !editor.can().chain().focus().toggleItalic().run(),
+          )
+        "
+        :active="editor.isActive('underline')"
+        icon="fas fa-underline"
+        size="x-small"
+      >
+      </v-btn>
+      <!-- btn-strike -->
       <v-btn
         @click="editor.chain().focus().toggleStrike().run()"
         :disabled="!editor.can().chain().focus().toggleStrike().run()"
@@ -44,9 +63,10 @@
           )
         "
         icon="fas fa-strikethrough"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-code -->
       <v-btn
         @click="editor.chain().focus().toggleCodeBlock().run()"
         :disabled="!editor.can().chain().focus().toggleCodeBlock().run()"
@@ -57,61 +77,160 @@
           )
         "
         icon="fas fa-code"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-link -->
       <v-btn
         @click="toggleLink"
         :disabled="!editor.can().chain().focus().toggleLink().run()"
         v-bind="buttonClass(editor.isActive('link'))"
         :icon="editor.isActive('link') ? 'fas fa-unlink' : 'fas fa-link'"
         aria-hidden="true"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-image -->
       <v-btn
         @click="toggleImageInput"
         v-bind="buttonClass(editor.isActive('image'))"
         :icon="editor.isActive('image') ? 'fas fa-unImage' : 'fas fa-image'"
         aria-hidden="true"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-video -->
+      <v-btn
+        @click="toggleLink"
+        :disabled="!editor.can().chain().focus().toggleLink().run()"
+        v-bind="buttonClass(editor.isActive('link'))"
+        :icon="editor.isActive('link') ? 'fas fa-youtube' : 'fas fa-youtube'"
+        aria-hidden="true"
+        size="x-small"
+      >
+      </v-btn>
+      <!-- btn-eraser -->
       <v-btn
         @click="editor.chain().focus().unsetAllMarks().run()"
         v-bind="buttonClass(false)"
         icon="fas fa-eraser"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-trash -->
       <v-btn
         @click="editor.chain().focus().clearNodes().run()"
         v-bind="buttonClass(false)"
         :active="editor.isActive('trash')"
         icon="fas fa-trash-alt"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-paragraph -->
       <v-btn
         @click="editor.chain().focus().setParagraph().run()"
         v-bind="buttonClass(editor.isActive('paragraph'))"
         icon="fas fa-paragraph"
-        size="small"
+        size="x-small"
       >
       </v-btn>
-
+      <!-- Menu de fontes atualizado -->
       <v-menu open-on-hover>
         <template v-slot:activator="{ props }">
           <v-btn
             v-bind="props"
-            class="mx-1 flex items-center justify-center rounded-full transition-colors duration-300 md:mb-0 text-gray-600 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm text-center"
-            size="small"
+            class="flex items-center justify-center py-2 px-2"
+            size="x-small"
+            icon="fas fa-font"
+            width="auto"
+            height="26px"
+            rounded="rounded"
+            :color="'#2d2d2d'"
+            variant="plain"
+            elevation="10"
+            border
+          >
+            <span :style="{ fontFamily: currentFontFamily || 'Inter' }">
+              {{ currentFontFamily || 'Aa' }}
+            </span>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-for="font in fonts" :key="font.name">
+            <v-list-item-title>
+              <v-btn
+                @click="setFontFamily(font.name)"
+                v-bind="{
+                  'font-active': editor.isActive('textStyle', {
+                    fontFamily: font.name,
+                  }),
+                }"
+                :style="{ fontFamily: font.name }"
+              >
+                {{ font.label }}
+              </v-btn>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- Menu de cabecalhos Headings -->
+      <v-menu open-on-hover>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            class="mx-1 flex items-center justify-center"
+            size="x-small"
             icon="fas fa-heading"
-            width="32px"
-            height="32px"
+            width="24px"
+            height="24px"
             rounded="circle"
             :color="'#2d2d2d'"
             variant="plain"
+            elevation="10"
+            border
+          >
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-for="heading in headings" :key="heading.level">
+            <v-list-item-title>
+              <v-btn
+                @click="toggleHeading(heading.level)"
+                v-bind="editor.isActive('heading', { level: heading.level })"
+                style="
+                  width: 100%;
+                  justify-content: start;
+                  text-transform: none;
+                  padding: 8px 16px;
+                "
+              >
+                <i class="fas fa-heading"></i>{{ heading.label }}
+              </v-btn>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- Menu de text align -->
+      <v-menu open-on-hover>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            class="mx-1 flex items-center justify-center"
+            size="x-small"
+            icon="fas fa-align-left"
+            width="24px"
+            height="24px"
+            rounded="circle"
+            :color="
+              editor.isActive('textAlign', { textAlign: currentTextAlign })
+                ? '#059669'
+                : '#2d2d2d'
+            "
+            :icon="getCurrentAlignIcon"
+            variant="plain"
+            elevation="10"
             border
           >
           </v-btn>
@@ -119,127 +238,166 @@
 
         <v-list>
           <v-list-item>
-            <v-list-item-title>
-              <v-btn
-                @click="
-                  editor.chain().focus().toggleHeading({ level: 1 }).run()
-                "
-                v-bind="buttonClass(editor.isActive('heading', { level: 1 }))"
-              >
-                <i class="fas fa-heading"></i>1
-              </v-btn>
-            </v-list-item-title>
-            <v-list-item-title>
-              <v-btn
-                @click="
-                  editor.chain().focus().toggleHeading({ level: 2 }).run()
-                "
-                v-bind="buttonClass(editor.isActive('heading', { level: 2 }))"
-              >
-                <i class="fas fa-heading"></i>2
-              </v-btn>
-            </v-list-item-title>
-            <v-list-item-title>
-              <v-btn
-                @click="
-                  editor.chain().focus().toggleHeading({ level: 3 }).run()
-                "
-                v-bind="buttonClass(editor.isActive('heading', { level: 3 }))"
-              >
-                <i class="fas fa-heading"></i>3
-              </v-btn>
-            </v-list-item-title>
-            <v-list-item-title>
-              <v-btn
-                @click="
-                  editor.chain().focus().toggleHeading({ level: 5 }).run()
-                "
-                v-bind="buttonClass(editor.isActive('heading', { level: 5 }))"
-              >
-                <i class="fas fa-heading"></i>5
-              </v-btn>
-            </v-list-item-title>
-            <v-list-item-title>
-              <v-btn
-                @click="
-                  editor.chain().focus().toggleHeading({ level: 5 }).run()
-                "
-                v-bind="buttonClass(editor.isActive('heading', { level: 5 }))"
-              >
-                <i class="fas fa-heading"></i>5
-              </v-btn>
-            </v-list-item-title>
-            <v-list-item-title>
-              <v-btn
-                @click="
-                  editor.chain().focus().toggleHeading({ level: 6 }).run()
-                "
-                v-bind="buttonClass(editor.isActive('', { level: 6 }))"
-              >
-                <i class="fas fa-heading"></i>6
-              </v-btn>
-            </v-list-item-title>
+            <v-btn
+              v-for="align in textAlignOptions"
+              :key="align"
+              @click="setTextAlign(align)"
+              :class="{ 'is-active': editor.isActive({ textAlign: align }) }"
+              class="mx-1 my-1"
+              :icon="getAlignIcon(align)"
+              size="x-small"
+            >
+            </v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
-
+      <!-- btn-bulletList -->
       <v-btn
         @click="editor.chain().focus().toggleBulletList().run()"
         v-bind="buttonClass(editor.isActive('bulletList'))"
         :active="editor.isActive('bulletList')"
         icon="fas fa-list-ul"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-orderedList -->
       <v-btn
         @click="editor.chain().focus().toggleOrderedList().run()"
         v-bind="buttonClass(editor.isActive('orderedList'))"
         icon="fas fa-list-ol"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-blockquote -->
       <v-btn
         @click="editor.chain().focus().toggleBlockquote().run()"
         v-bind="buttonClass(editor.isActive('blockquote'))"
         icon="fas fa-quote-right"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-HorizontalRul -->
       <v-btn
         @click="editor.chain().focus().setHorizontalRule().run()"
         v-bind="buttonClass(false)"
         icon="fas fa-minus"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-HardBreak -->
       <v-btn
         @click="editor.chain().focus().setHardBreak().run()"
         v-bind="buttonClass(false)"
         icon="fas fa-level-down-alt"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-undo -->
       <v-btn
         @click="editor.chain().focus().undo().run()"
         :disabled="!editor.can().chain().focus().undo().run()"
         v-bind="buttonClass(false, !editor.can().chain().focus().undo().run())"
         icon="fas fa-undo-alt"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- btn-redo -->
       <v-btn
         @click="editor.chain().focus().redo().run()"
         :disabled="!editor.can().chain().focus().redo().run()"
         v-bind="buttonClass(false, !editor.can().chain().focus().redo().run())"
         icon="fas fa-redo-alt"
-        size="small"
+        size="x-small"
       >
       </v-btn>
+      <!-- Menu text-color-picker -->
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            class="mx-1 flex items-center justify-center"
+            size="x-small"
+            :icon="
+              editor.isActive('textStyle', { color: activeColor })
+                ? 'fas fa-paint-brush'
+                : 'fas fa-paint-brush'
+            "
+            width="24px"
+            height="24px"
+            rounded="circle"
+            :color="
+              editor.isActive('textStyle', { color: activeColor })
+                ? activeColor
+                : 'grey darken-2'
+            "
+            variant="plain"
+            elevation="10"
+            border
+          >
+          </v-btn>
+        </template>
+
+        <v-card>
+          <v-color-picker
+            v-model="activeColor"
+            @update:model-value="updateColor"
+            dot-size="20"
+            swatches-max-height="100"
+            hide-inputs
+          ></v-color-picker>
+        </v-card>
+      </v-menu>
+      <!-- Menu text-highlight -->
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            class="mx-1 flex items-center justify-center"
+            size="x-small"
+            :icon="
+              editor.isActive('highlight')
+                ? 'fas fa-highlighter'
+                : 'fas fa-highlighter'
+            "
+            width="24px"
+            height="24px"
+            rounded="circle"
+            :color="
+              editor.isActive('highlight') ? activeColor : 'grey darken-2'
+            "
+            variant="plain"
+            elevation="10"
+            border
+          >
+          </v-btn>
+        </template>
+
+        <v-card>
+          <v-color-picker
+            v-model="activeColor"
+            @update:model-value="updateHighlight"
+            dot-size="20"
+            swatches-max-height="100"
+            hide-inputs
+          ></v-color-picker>
+        </v-card>
+      </v-menu>
+      <!-- btn-undo-highlight-and-textColor -->
       <v-btn
-        @click="editor.chain().focus().setColor('#059669').run()"
-        v-bind="buttonClass(editor.isActive('textStyle', !editor))"
-        icon="fas fa-paint-brush"
-        size="small"
+        @click="
+          editor.chain().focus().unsetHighlight().run() &&
+            editor.chain().focus().unsetColor().run()
+        "
+        :disabled="!editor.can().chain().focus().unsetHighlight().run()"
+        v-bind="
+          buttonClass(
+            editor.isActive('highlight'),
+            !editor.can().chain().focus().unsetHighlight().run(),
+          )
+        "
+        :active="editor.isActive('highlight')"
+        icon="fas fa-droplet-slash"
+        size="x-small"
       >
       </v-btn>
     </div>
@@ -309,8 +467,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Input flutuante para o link -->
+    <!-- Input para o link -->
     <div
       v-if="showLinkInput"
       :style="linkInputStyle"
@@ -341,39 +498,408 @@
         >Cancel
       </v-btn>
     </div>
-
-    <editor-content :editor="editor" />
+    <!-- Input para o youtube -->
+    <div
+      v-if="showLinkInput"
+      :style="linkInputStyle"
+      class="flex mt-2 p-2 bg-white shadow-lg border rounded-lg"
+    >
+      <input
+        v-model="linkUrl"
+        type="text"
+        placeholder="Enter Video URL"
+        class="p-2 mr-2 text-sm border rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+        style="width: 800px; height: 30px"
+      />
+      <v-btn
+        @click="addVideo"
+        :disabled="isLoading || !linkUrl"
+        class="text-white px-4 py-1 rounded-lg text-sm uppercase font-semibold hover:bg-emerald-600"
+        elevation="5"
+        color="#059669"
+        style="height: 30px; font-weight: bolder"
+      >
+        Apply
+      </v-btn>
+      <v-btn
+        @click="cancelLink"
+        class="ml-2 px-4 py-1 font-semibold uppercase text-sm rounded-lg border-e-md border hover:bg-emerald-800 hover:shadow-md hover:text-white"
+        style="height: 30px; font-weight: bolder"
+        levation="5"
+        >Cancel
+      </v-btn>
+    </div>
   </div>
+
+  <template>
+    <div v-if="editor">
+      <bubble-menu
+        class="container mx-auto my-4 p-4 bg-white rounded-lg shadow-lg border-b-2 border-e-md border-l-2 border-r-2 border-2"
+        :tippy-options="{ duration: 100 }"
+        :editor="editor"
+        style="width: 600px"
+      >
+        <v-btn
+          @click="editor.chain().focus().toggleBold().run()"
+          :disabled="!editor.can().chain().focus().toggleBold().run()"
+          class="ml-2"
+          v-bind="
+            buttonClass(
+              editor.isActive('bold'),
+              !editor.can().chain().focus().toggleBold().run(),
+            )
+          "
+          :active="editor.isActive('bold')"
+          icon="fas fa-bold"
+          size="x-small"
+        >
+        </v-btn>
+        <v-btn
+          @click="editor.chain().focus().toggleItalic().run()"
+          :disabled="!editor.can().chain().focus().toggleItalic().run()"
+          v-bind="
+            buttonClass(
+              editor.isActive('italic'),
+              !editor.can().chain().focus().toggleItalic().run(),
+            )
+          "
+          :active="editor.isActive('italic')"
+          icon="fas fa-italic"
+          size="x-small"
+        >
+        </v-btn>
+        <!-- btn-Underline -->
+        <v-btn
+          @click="editor.chain().focus().toggleUnderline().run()"
+          :disabled="!editor.can().chain().focus().toggleUnderline().run()"
+          v-bind="
+            buttonClass(
+              editor.isActive('underline'),
+              !editor.can().chain().focus().toggleItalic().run(),
+            )
+          "
+          :active="editor.isActive('underline')"
+          icon="fas fa-underline"
+          size="x-small"
+        >
+        </v-btn>
+        <v-btn
+          @click="editor.chain().focus().toggleStrike().run()"
+          :disabled="!editor.can().chain().focus().toggleStrike().run()"
+          v-bind="
+            buttonClass(
+              editor.isActive('strike'),
+              !editor.can().chain().focus().toggleStrike().run(),
+            )
+          "
+          icon="fas fa-strikethrough"
+          size="x-small"
+        >
+        </v-btn>
+        <v-btn
+          @click="toggleLink"
+          :disabled="!editor.can().chain().focus().toggleLink().run()"
+          v-bind="buttonClass(editor.isActive('link'))"
+          :icon="editor.isActive('link') ? 'fas fa-unlink' : 'fas fa-link'"
+          aria-hidden="true"
+          size="x-small"
+        >
+        </v-btn>
+        <!-- Menu de fontes atualizado -->
+        <v-menu open-on-hover>
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              class="mx-1 flex items-center justify-center py-2 px-2"
+              size="x-small"
+              icon="fas fa-font"
+              width="auto"
+              height="32px"
+              rounded="rounded"
+              :color="'#2d2d2d'"
+              variant="plain"
+              elevation="10"
+              border
+            >
+              <span :style="{ fontFamily: currentFontFamily || 'Inter' }">
+                {{ currentFontFamily || 'Aa' }}
+              </span>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item v-for="font in fonts" :key="font.name">
+              <v-list-item-title>
+                <v-btn
+                  @click="setFontFamily(font.name)"
+                  v-bind="{
+                    'font-active': editor.isActive('textStyle', {
+                      fontFamily: font.name,
+                    }),
+                  }"
+                  :style="{ fontFamily: font.name }"
+                >
+                  {{ font.label }}
+                </v-btn>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <!-- Menu de cabeçalhos Headings -->
+        <v-menu open-on-hover>
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              class="mx-1 flex items-center justify-center"
+              size="x-small"
+              icon="fas fa-heading"
+              width="32px"
+              height="32px"
+              rounded="circle"
+              :color="'#2d2d2d'"
+              variant="plain"
+              elevation="10"
+              border
+            >
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item v-for="heading in headings" :key="heading.level">
+              <v-list-item-title>
+                <v-btn
+                  @click="toggleHeading(heading.level)"
+                  v-bind="editor.isActive('heading', { level: heading.level })"
+                  style="
+                    width: 100%;
+                    justify-content: start;
+                    text-transform: none;
+                    padding: 8px 16px;
+                  "
+                >
+                  <i class="fas fa-heading"></i>{{ heading.label }}
+                </v-btn>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <!-- Menu de text align -->
+        <v-menu open-on-hover>
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              class="mx-1 flex items-center justify-center"
+              size="x-small"
+              icon="fas fa-align-left"
+              width="24px"
+              height="24px"
+              rounded="circle"
+              :color="
+                editor.isActive('textAlign', { textAlign: currentTextAlign })
+                  ? '#059669'
+                  : '#2d2d2d'
+              "
+              :icon="getCurrentAlignIcon"
+              variant="plain"
+              elevation="10"
+              border
+            >
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item>
+              <v-btn
+                v-for="align in textAlignOptions"
+                :key="align"
+                @click="setTextAlign(align)"
+                :class="{ 'is-active': editor.isActive({ textAlign: align }) }"
+                class="mx-1 my-1"
+                :icon="getAlignIcon(align)"
+                size="x-small"
+              >
+              </v-btn>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <v-btn
+          @click="editor.chain().focus().toggleBulletList().run()"
+          v-bind="buttonClass(editor.isActive('bulletList'))"
+          :active="editor.isActive('bulletList')"
+          icon="fas fa-list-ul"
+          size="x-small"
+        >
+        </v-btn>
+        <v-btn
+          @click="editor.chain().focus().toggleOrderedList().run()"
+          v-bind="buttonClass(editor.isActive('orderedList'))"
+          icon="fas fa-list-ol"
+          size="x-small"
+        >
+        </v-btn>
+        <v-btn
+          @click="editor.chain().focus().toggleBlockquote().run()"
+          v-bind="buttonClass(editor.isActive('blockquote'))"
+          icon="fas fa-quote-right"
+          size="x-small"
+        >
+        </v-btn>
+        <!-- btn-undo -->
+        <v-btn
+          @click="editor.chain().focus().undo().run()"
+          :disabled="!editor.can().chain().focus().undo().run()"
+          v-bind="
+            buttonClass(false, !editor.can().chain().focus().undo().run())
+          "
+          icon="fas fa-undo-alt"
+          size="x-small"
+        >
+        </v-btn>
+        <!-- Menu text-color -->
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              class="mx-1 flex items-center justify-center"
+              size="x-small"
+              :icon="
+                editor.isActive('textStyle', { color: activeColor })
+                  ? 'fas fa-paint-brush'
+                  : 'fas fa-paint-brush'
+              "
+              width="24px"
+              height="24px"
+              rounded="circle"
+              :color="
+                editor.isActive('textStyle', { color: activeColor })
+                  ? activeColor
+                  : 'grey darken-2'
+              "
+              variant="plain"
+              elevation="10"
+              border
+            >
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-color-picker
+              v-model="activeColor"
+              @update:model-value="updateColor"
+              dot-size="20"
+              swatches-max-height="100"
+              hide-inputs
+            ></v-color-picker>
+          </v-card>
+        </v-menu>
+        <!-- Menu text-highlight -->
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              class="mx-1 flex items-center justify-center"
+              size="x-small"
+              :icon="
+                editor.isActive('highlight')
+                  ? 'fas fa-highlighter'
+                  : 'fas fa-highlighter'
+              "
+              width="24px"
+              height="24px"
+              rounded="circle"
+              :color="
+                editor.isActive('highlight') ? activeColor : 'grey darken-2'
+              "
+              variant="plain"
+              elevation="10"
+              border
+            >
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-color-picker
+              v-model="activeColor"
+              @update:model-value="updateHighlight"
+              dot-size="20"
+              swatches-max-height="100"
+              hide-inputs
+            ></v-color-picker>
+          </v-card>
+        </v-menu>
+        <!-- btn-undo-highlight-and-textColor -->
+        <v-btn
+          @click="
+            editor.chain().focus().unsetHighlight().run() &&
+              editor.chain().focus().unsetColor().run()
+          "
+          :disabled="!editor.can().chain().focus().unsetHighlight().run()"
+          v-bind="
+            buttonClass(
+              editor.isActive('highlight'),
+              !editor.can().chain().focus().unsetHighlight().run(),
+            )
+          "
+          :active="editor.isActive('highlight')"
+          icon="fas fa-droplet-slash"
+          size="x-small"
+        >
+        </v-btn>
+      </bubble-menu>
+
+      <floating-menu
+        class="floating-menu"
+        :tippy-options="{ duration: 100 }"
+        :editor="editor"
+      ></floating-menu>
+    </div>
+  </template>
+
+  <editor-content :editor="editor" />
 </template>
 
 <script>
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
+import FontFamily from '@tiptap/extension-font-family'
 import TextStyle from '@tiptap/extension-text-style'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
+import TextAlign from '@tiptap/extension-text-align'
 import Heading from '@tiptap/extension-heading'
 import Link from '@tiptap/extension-link'
 import Dropcursor from '@tiptap/extension-dropcursor'
 import Image from '@tiptap/extension-image'
 import StarterKit from '@tiptap/starter-kit'
-import { Editor, EditorContent, VueNodeViewRenderer } from '@tiptap/vue-3'
-import { FwbDropdown } from 'flowbite-vue'
+import Highlight from '@tiptap/extension-highlight'
+import Underline from '@tiptap/extension-underline'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import Youtube from '@tiptap/extension-youtube'
+
+import {
+  Editor,
+  EditorContent,
+  VueNodeViewRenderer,
+  FloatingMenu,
+  BubbleMenu,
+} from '@tiptap/vue-3'
+import { FwbDropdown } from 'flowbite-vue'
+
 import css from 'highlight.js/lib/languages/css'
 import js from 'highlight.js/lib/languages/javascript'
 import ts from 'highlight.js/lib/languages/typescript'
 import html from 'highlight.js/lib/languages/xml'
 import java from 'highlight.js/lib/languages/java'
-// load all languages with "all" or common languages with "common"
+
 import { all, createLowlight } from 'lowlight'
 import CodeBlockComponent from './CodeBlock/CodeBlock.vue'
 
-// create a lowlight instance
 const lowlight = createLowlight(all)
 
-// you can also register languages
 lowlight.register('html', html)
 lowlight.register('css', css)
 lowlight.register('js', js)
@@ -385,8 +911,8 @@ export default {
     buttonClass(isActive, isDisabled = false) {
       return {
         class: 'mr-2',
-        width: '32px',
-        height: '32px',
+        width: '24px',
+        height: '24px',
         rounded: 'circle',
         elevation: 10,
         disabled: isDisabled,
@@ -395,6 +921,16 @@ export default {
         border: `1px solid ${isActive ? '#10B981' : '#2d2d2d'}`,
         'aria-disabled': isDisabled,
       }
+    },
+
+    updateColor(color) {
+      this.activeColor = color
+      this.editor.chain().focus().setColor(color).run()
+    },
+
+    updateHighlight(color) {
+      this.activeColor = color
+      this.editor.chain().focus().toggleHighlight({ color }).run()
     },
 
     toggleImageInput() {
@@ -462,11 +998,61 @@ export default {
     cancelLink() {
       this.showLinkInput = false
     },
+
+    setFontFamily(fontFamily) {
+      this.editor.chain().focus().setFontFamily(fontFamily).run()
+      this.currentFontFamily = fontFamily
+    },
+
+    toggleHeading(level) {
+      this.editor.chain().focus().toggleHeading({ level }).run()
+    },
+
+    setTextAlign(align) {
+      this.editor.chain().focus().setTextAlign(align).run()
+      this.currentTextAlign = align
+    },
+
+    getCurrentAlignIcon() {
+      const currentAlign = this.textAlignOptions.find((align) =>
+        this.editor.isActive({ textAlign: align }),
+      )
+      return currentAlign
+        ? this.getAlignIcon(currentAlign)
+        : 'fas fa-align-left'
+    },
+
+    getAlignIcon(align) {
+      switch (align) {
+        case 'left':
+          return 'fas fa-align-left'
+        case 'center':
+          return 'fas fa-align-center'
+        case 'right':
+          return 'fas fa-align-right'
+        case 'justify':
+          return 'fas fa-align-justify'
+        default:
+          return 'fas fa-align-left'
+      }
+    },
+
+    addVideo() {
+      const url = prompt('Enter YouTube URL')
+
+      this.editor.commands.setYoutubeVideo({
+        src: url,
+        width: Math.max(320, parseInt(this.width, 10)) || 640,
+        height: Math.max(180, parseInt(this.height, 10)) || 480,
+      })
+    },
   },
 
   components: {
     FwbDropdown,
     EditorContent,
+    BubbleMenu,
+    FloatingMenu,
   },
 
   props: {
@@ -488,6 +1074,45 @@ export default {
         top: '0px',
         left: '0px',
       },
+      currentFontFamily: 'Inter',
+      currentTextAlign: 'left',
+      fonts: [
+        { name: 'Inter', label: 'Inter' },
+        { name: 'Comic Sans MS, Comic Sans', label: 'Comic Sans' },
+        { name: 'serif', label: 'Serif' },
+        { name: 'monospace', label: 'Monospace' },
+        { name: 'cursive', label: 'Cursive' },
+      ],
+      headings: [
+        { level: 1, label: '1' },
+        { level: 2, label: '2' },
+        { level: 3, label: '3' },
+        { level: 4, label: '4' },
+        { level: 5, label: '5' },
+        { level: 6, label: '6' },
+      ],
+      textAlignOptions: ['left', 'center', 'right', 'justify'],
+      textAligns: [
+        { name: 'left', icon: 'fas fa-align-left' },
+        { name: 'center', icon: 'fas fa-align-center' },
+        { name: 'right', icon: 'fas fa-align-right' },
+        { name: 'justify', icon: 'fas fa-align-justify' },
+      ],
+      activeColor: '#059669',
+      colors: [
+        { number: 1, color: '#ffffff' },
+        { number: 2, color: '#37ff00' },
+        { number: 3, color: '#ff0000' },
+        { number: 4, color: '#22D3EE' },
+        { number: 5, color: '#ff00f2' },
+        { number: 6, color: '#ffd400' },
+        { number: 7, color: '#4F46E5' },
+        { number: 8, color: '#ff7500' },
+        { number: 9, color: '#434343' },
+        { number: 10, color: '#0700ff' },
+      ],
+      width: '640',
+      height: '480',
     }
   },
 
@@ -500,6 +1125,27 @@ export default {
   },
 
   mounted() {
+    const CustomHighlight = Highlight.extend({
+      addAttributes() {
+        return {
+          ...this.parent?.(),
+          color: {
+            default: null,
+            parseHTML: (element) => element.getAttribute('data-color'),
+            renderHTML: (attributes) => {
+              if (!attributes.color) {
+                return {}
+              }
+              return {
+                'data-color': attributes.color,
+                style: `background-color: ${attributes.color}; color: white;`,
+              }
+            },
+          },
+        }
+      },
+    })
+
     this.editor = new Editor({
       extensions: [
         Document,
@@ -527,7 +1173,15 @@ export default {
             return VueNodeViewRenderer(CodeBlockComponent)
           },
         }).configure({ lowlight }),
-        Color.configure({ types: [TextStyle.name, ListItem.name] }),
+        Color,
+        FontFamily.configure({
+          types: ['textStyle'],
+        }),
+        TextAlign.configure({
+          types: ['heading', 'paragraph'],
+          alignments: ['left', 'center', 'right', 'justify'],
+          defaultAlignment: 'left',
+        }),
         TextStyle.configure({
           types: [ListItem.name],
           styles: {
@@ -539,6 +1193,17 @@ export default {
           },
         }),
         StarterKit,
+        CustomHighlight.configure({
+          multicolor: true,
+          HTMLAttributes: {
+            class: 'highlight',
+          },
+        }),
+        Underline,
+        Youtube.configure({
+          controls: false,
+          nocookie: true,
+        }),
       ],
       content: this.modelValue,
       editorProps: {
@@ -557,6 +1222,11 @@ export default {
         this.$emit('update:modelValue', this.editor.getHTML())
       },
     })
+
+    this.editor.on('selectionUpdate', () => {
+      const fontFamily = this.editor.getAttributes('textStyle').fontFamily
+      this.currentFontFamily = fontFamily || 'Inter'
+    })
   },
 
   beforeUnmount() {
@@ -570,6 +1240,62 @@ export default {
 .tiptap {
   :first-child {
     margin-top: 0;
+  }
+
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+    li p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  /* Heading styles */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.1;
+    margin-top: 2.5rem;
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2 {
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: 1rem;
+  }
+
+  /* Code and preformatted text styles */
+  code {
+    background-color: var(--purple-light);
+    border-radius: 0.4rem;
+    color: var(--black);
+    font-size: 0.85rem;
+    padding: 0.25em 0.3em;
   }
 
   pre {
@@ -638,6 +1364,118 @@ export default {
 
     .hljs-strong {
       font-weight: 700;
+    }
+  }
+  blockquote {
+    border-left: 3px solid var(--gray-3);
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--gray-2);
+    margin: 2rem 0;
+  }
+
+  .font-button {
+    width: 100%;
+    justify-content: start;
+    text-transform: none;
+    padding: 8px 16px;
+  }
+
+  .font-active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  /* Bubble menu */
+  .bubble-menu {
+    background-color: var(--white);
+    border: 1px solid var(--gray-1);
+    border-radius: 0.7rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    padding: 0.2rem;
+
+    button {
+      background-color: unset;
+
+      &:hover {
+        background-color: var(--gray-3);
+      }
+
+      &.is-active {
+        background-color: var(--purple);
+
+        &:hover {
+          background-color: var(--purple-contrast);
+        }
+      }
+    }
+  }
+
+  /* Floating menu */
+  .floating-menu {
+    display: flex;
+    background-color: var(--gray-3);
+    padding: 0.1rem;
+    border-radius: 0.5rem;
+
+    button {
+      background-color: unset;
+      padding: 0.275rem 0.425rem;
+      border-radius: 0.3rem;
+
+      &:hover {
+        background-color: var(--gray-3);
+      }
+
+      &.is-active {
+        background-color: var(--white);
+        color: var(--purple);
+
+        &:hover {
+          color: var(--purple-contrast);
+        }
+      }
+    }
+  }
+  .mark {
+    background-color: #3c763d;
+    border-radius: 2rem;
+    box-decoration-break: clone;
+    padding: 0.1rem 0.3rem;
+  }
+  .highlight {
+    background-color: var(--highlight-color, yellow);
+    border-radius: 0.25em;
+    box-decoration-break: clone;
+    padding: 0.05em 0.2em 0.15em;
+  }
+  .highlight[data-color] {
+    background-color: var(data-color);
+    color: white;
+    border-radius: 0.25em;
+    box-decoration-break: clone;
+    padding: 0.1em 0.3em;
+  }
+  /* Youtube embed */
+  div[data-youtube-video] {
+    cursor: move;
+    padding-right: 1.5rem;
+
+    iframe {
+      border: 0.5rem solid var(--black-contrast);
+      display: block;
+      min-height: 200px;
+      min-width: 200px;
+      outline: 0px solid transparent;
+    }
+
+    &.ProseMirror-selectednode iframe {
+      outline: 3px solid var(--purple);
+      transition: outline 0.15s;
     }
   }
 }

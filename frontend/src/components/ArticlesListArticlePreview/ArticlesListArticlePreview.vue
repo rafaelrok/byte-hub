@@ -46,7 +46,7 @@
           <li
             v-for="tag in article.tagList"
             :key="tag"
-            class="tag-default tag-pill tag-outline"
+            class="tag-default tag-pill tag-outline mb-2"
           >
             {{ tag }}
           </li>

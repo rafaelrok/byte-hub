@@ -1,8 +1,9 @@
 <template>
-  <div class="banner">
-    <div class="container">
-      <h1>{{ article.title }}</h1>
-
+  <div class="banner top-0" style="height: 250px">
+    <div class="relative ml-16 pl-16">
+      <h1 class="ml-32 uppercase">{{ article.title }}</h1>
+    </div>
+    <div class="container ml-16">
       <ArticleDetailMeta
         v-if="article"
         :article="article"
@@ -12,9 +13,9 @@
   </div>
 
   <div class="container page mb-10">
-    <div>
-      <h2 class="article-subtitle font-bold">{{ article.title }}</h2>
-      <span class="article-subtitle font-light">{{ article.description }}</span>
+    <div class="article-subtitle">
+      <h1 class="font-bold uppercase text-md">{{ article.title }}</h1>
+      <span class="font-semibold align-center">{{ article.description }}</span>
     </div>
     <div class="row article-content">
       <div id="article-content" class="col-md-12" v-html="articleHandledBody" />
@@ -27,22 +28,34 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-// import marked from '@/plugins/marked.ts'
 import { api } from '@/services'
 import type { Article } from '@/services/api.ts'
 import ArticleDetailMeta from '../ArticleDetailMeta/ArticleDetailMeta.vue'
 import { Editor } from '@tiptap/vue-3'
-import { StarterKit } from '@tiptap/starter-kit'
+import { Color } from '@tiptap/extension-color'
+import FontFamily from '@tiptap/extension-font-family'
+import TextStyle from '@tiptap/extension-text-style'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import TextAlign from '@tiptap/extension-text-align'
+import Heading from '@tiptap/extension-heading'
+import Link from '@tiptap/extension-link'
+import Dropcursor from '@tiptap/extension-dropcursor'
 import Image from '@tiptap/extension-image'
+import StarterKit from '@tiptap/starter-kit'
+import Youtube from '@tiptap/extension-youtube'
 import hljs from 'highlight.js'
+import Highlight from '@tiptap/extension-highlight'
+import Underline from '@tiptap/extension-underline'
+
+hljs.initHighlighting()
 
 const route = useRoute()
 const slug = route.params.slug as string
 const article: Article = reactive(
   await api.articles.getArticle(slug).then((res) => res.data.article),
 )
-
-hljs.initHighlighting()
 
 const highlightCode = (html: any) => {
   const codeBlocks = html.match(/<code[^>]*>(.*?)<\/code>/gs)
@@ -58,11 +71,47 @@ const highlightCode = (html: any) => {
   return html
 }
 
+const CustomHighlight = Highlight.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      color: {
+        default: null,
+        parseHTML: (element) => element.getAttribute('data-color'),
+        renderHTML: (attributes) => {
+          if (!attributes.color) {
+            return {}
+          }
+          return {
+            'data-color': attributes.color,
+            style: `background-color: ${attributes.color}; color: white;`,
+          }
+        },
+      },
+    }
+  },
+})
+
 const articleHandledBody = computed(() => {
   const editor = new Editor({
     content: article.body,
     extensions: [
       StarterKit,
+      TextStyle,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      Color,
+      Dropcursor,
+      Heading.configure({
+        levels: [1, 2, 3, 4, 5, 6],
+      }),
+      Link.configure({
+        openOnClick: true,
+        linkOnPaste: true,
+        protocols: ['ftp', 'mailto'],
+        defaultProtocol: 'https',
+      }),
       Image.configure({
         allowBase64: true,
         inline: true,
@@ -70,8 +119,26 @@ const articleHandledBody = computed(() => {
           class: 'image-class',
         },
       }),
+      FontFamily.configure({
+        types: ['textStyle'],
+      }),
+      CustomHighlight.configure({
+        multicolor: true,
+        HTMLAttributes: {
+          class: 'highlight',
+        },
+      }),
+      Underline,
+      Youtube.configure({
+        controls: false,
+        nocookie: true,
+      }),
+      Document,
+      Paragraph,
+      Text,
     ],
   })
+
   const html = editor.getHTML()
   return highlightCode(html)
 })
@@ -82,6 +149,10 @@ function updateArticle(newArticle: Article) {
 </script>
 
 <style scoped lang="scss">
+:deep(.article-content) {
+  font-family: Roboto, sans-serif;
+  font-size: 8px;
+}
 :deep(.article-content h1) {
   font-size: 2em;
   font-weight: bold;
@@ -127,7 +198,7 @@ function updateArticle(newArticle: Article) {
 }
 :deep(.article-content pre) {
   position: relative;
-  background: #2b2d30;
+  background: #282c34;
   border-radius: 0.5rem;
   font-family: 'JetBrainsMono', monospace;
   margin-left: 10rem;
@@ -135,6 +206,68 @@ function updateArticle(newArticle: Article) {
   padding: 0.75rem 1rem;
   width: auto;
   overflow-x: auto;
+
+  code {
+    background: none;
+    font-size: 0.9rem;
+    padding: 0;
+  }
+
+  /* Code styling */
+  .hljs-comment,
+  .hljs-quote {
+    color: #616161;
+  }
+
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-attribute,
+  .hljs-tag,
+  .hljs-name,
+  .hljs-regexp,
+  .hljs-link,
+  .hljs-name,
+  .hljs-selector-id,
+  .hljs-selector-class {
+    color: #4d26bc;
+  }
+
+  .hljs-number,
+  .hljs-meta,
+  .hljs-built_in,
+  .hljs-builtin-name,
+  .hljs-literal,
+  .hljs-type,
+  .hljs-params {
+    color: #fbbc88;
+  }
+
+  .hljs-string,
+  .hljs-symbol,
+  .hljs-bullet {
+    color: #b9f18d;
+  }
+
+  .hljs-title {
+    color: #d8946f;
+  }
+
+  .hljs-section {
+    color: #bd7743;
+  }
+
+  .hljs-keyword,
+  .hljs-selector-tag {
+    color: #388ef4;
+  }
+
+  .hljs-emphasis {
+    font-style: italic;
+  }
+
+  .hljs-strong {
+    font-weight: 700;
+  }
 }
 :deep(.article-content code) {
   font-family: 'JetBrainsMono', monospace;
@@ -169,5 +302,18 @@ function updateArticle(newArticle: Article) {
   border: 1px solid #ddd;
   margin: 2em auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+:deep(.article-content .highlight) {
+  background-color: var(--highlight-color, yellow);
+  border-radius: 0.25em;
+  box-decoration-break: clone;
+  padding: 0.05em 0.2em 0.15em;
+}
+.highlight[data-color] {
+  background-color: var(data-color);
+  color: white;
+  border-radius: 0.25em;
+  box-decoration-break: clone;
+  padding: 0.1em 0.3em;
 }
 </style>
