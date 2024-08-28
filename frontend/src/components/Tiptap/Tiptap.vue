@@ -103,7 +103,11 @@
       <v-btn
         @click="toggleLinkYoutube"
         v-bind="buttonClass(editor.isActive('youtube'))"
-        :icon="editor.isActive('youtube') ? 'fa-brands fa-youtube' : 'fa-brands fa-youtube'"
+        :icon="
+          editor.isActive('youtube')
+            ? 'fa-brands fa-youtube'
+            : 'fa-brands fa-youtube'
+        "
         aria-hidden="true"
         size="x-small"
       >
@@ -877,7 +881,7 @@
             class="ml-2 px-4 py-1 font-semibold uppercase text-sm rounded-lg border-e-md border hover:bg-emerald-800 hover:shadow-md hover:text-white"
             style="height: 30px; font-weight: bolder"
             levation="5"
-          >Cancel
+            >Cancel
           </v-btn>
         </div>
       </bubble-menu>
@@ -1091,7 +1095,7 @@ export default {
           controls: true,
         })
       }
-        this.showLinkYoutubeInput = false
+      this.showLinkYoutubeInput = false
     },
   },
 
