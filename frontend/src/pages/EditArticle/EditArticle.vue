@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-10 offset-md-1 col-xs-12">
           <form @submit.prevent="onSubmit">
-            <fieldset class="form-group">
+            <fieldset class="form-group shadow-lg">
               <div>
                 <span class="text-gray-500"
                   >Set the main image of your article here</span
@@ -39,7 +39,7 @@
                 </label>
               </div>
             </fieldset>
-            <fieldset class="form-group">
+            <fieldset class="form-group shadow-lg">
               <v-text-field
                 v-model="form.title"
                 hide-details="auto"
@@ -50,7 +50,7 @@
               >
               </v-text-field>
             </fieldset>
-            <fieldset class="form-group">
+            <fieldset class="form-group shadow-lg">
               <v-text-field
                 v-model="form.description"
                 hide-details="auto"
@@ -60,22 +60,15 @@
                 label="Description"
               />
             </fieldset>
-            <fieldset class="form-group">
+            <fieldset class="form-group shadow-lg">
               <Tiptap
                 v-model="form.body"
                 aria-label="Body"
                 class="form-control"
                 placeholder="Write your article (in markdown)"
               />
-              <!--              <textarea-->
-              <!--                v-model="form.body"-->
-              <!--                aria-label="Body"-->
-              <!--                :rows="8"-->
-              <!--                class="form-control"-->
-              <!--                placeholder="Write your article (in markdown)"-->
-              <!--              />-->
             </fieldset>
-            <fieldset class="form-group">
+            <fieldset class="form-group shadow-lg">
               <v-text-field
                 v-model="newTag"
                 hide-details="auto"
@@ -109,7 +102,7 @@
               class="btn btn-lg pull-xs-right"
               type="submit"
               color="#059669"
-              elevation="10"
+              elevation="5"
               width="180px"
               height="50px"
               variant="tonal"

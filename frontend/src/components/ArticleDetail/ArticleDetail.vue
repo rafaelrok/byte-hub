@@ -151,7 +151,9 @@ function updateArticle(newArticle: Article) {
 <style scoped lang="scss">
 :deep(.article-content) {
   font-family: Roboto, sans-serif;
-  font-size: 8px;
+  font-size: 1px;
+  font-weight: normal;
+  font-style: normal;
 }
 :deep(.article-content h1) {
   font-size: 2em;
@@ -315,5 +317,32 @@ function updateArticle(newArticle: Article) {
   border-radius: 0.25em;
   box-decoration-break: clone;
   padding: 0.1em 0.3em;
+}
+/* Youtube embed */
+:deep(.article-content div[data-youtube-video]) {
+  cursor: move;
+  padding-right: 1.5rem;
+  margin-left: 160px;
+  border-radius: 0.5rem;
+  width: 800px;
+  height: 480px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+  iframe {
+    width: 800px;
+    height: 480px;
+    border: 0.5rem solid var(--black-contrast);
+    display: block;
+    outline: 0 solid transparent;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  &.ProseMirror-selectednode iframe {
+    outline: 3px solid var(--purple);
+    transition: outline 0.15s;
+  }
 }
 </style>

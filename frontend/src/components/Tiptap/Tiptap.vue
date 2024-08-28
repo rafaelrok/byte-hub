@@ -101,10 +101,9 @@
       </v-btn>
       <!-- btn-video -->
       <v-btn
-        @click="toggleLink"
-        :disabled="!editor.can().chain().focus().toggleLink().run()"
-        v-bind="buttonClass(editor.isActive('link'))"
-        :icon="editor.isActive('link') ? 'fas fa-youtube' : 'fas fa-youtube'"
+        @click="toggleLinkYoutube"
+        v-bind="buttonClass(editor.isActive('youtube'))"
+        :icon="editor.isActive('youtube') ? 'fa-brands fa-youtube' : 'fa-brands fa-youtube'"
         aria-hidden="true"
         size="x-small"
       >
@@ -467,6 +466,7 @@
         </div>
       </div>
     </div>
+
     <!-- Input para o link -->
     <div
       v-if="showLinkInput"
@@ -498,14 +498,15 @@
         >Cancel
       </v-btn>
     </div>
+
     <!-- Input para o youtube -->
     <div
-      v-if="showLinkInput"
+      v-if="showLinkYoutubeInput"
       :style="linkInputStyle"
       class="flex mt-2 p-2 bg-white shadow-lg border rounded-lg"
     >
       <input
-        v-model="linkUrl"
+        v-model="linkYoutube"
         type="text"
         placeholder="Enter Video URL"
         class="p-2 mr-2 text-sm border rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
@@ -513,7 +514,7 @@
       />
       <v-btn
         @click="addVideo"
-        :disabled="isLoading || !linkUrl"
+        :disabled="isLoading || !linkYoutube"
         class="text-white px-4 py-1 rounded-lg text-sm uppercase font-semibold hover:bg-emerald-600"
         elevation="5"
         color="#059669"
@@ -522,7 +523,7 @@
         Apply
       </v-btn>
       <v-btn
-        @click="cancelLink"
+        @click="cancelLinkYoutube"
         class="ml-2 px-4 py-1 font-semibold uppercase text-sm rounded-lg border-e-md border hover:bg-emerald-800 hover:shadow-md hover:text-white"
         style="height: 30px; font-weight: bolder"
         levation="5"
@@ -848,6 +849,37 @@
           size="x-small"
         >
         </v-btn>
+
+        <div
+          v-if="showLinkInput"
+          :style="linkInputStyle"
+          class="flex mt-2 p-2 bg-white shadow-lg border rounded-lg"
+        >
+          <input
+            v-model="linkUrl"
+            type="text"
+            placeholder="Enter URL"
+            class="p-2 mr-2 text-sm border rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+            style="width: 800px; height: 30px"
+          />
+          <v-btn
+            @click="applyLink"
+            :disabled="isLoading || !linkUrl"
+            class="text-white px-4 py-1 rounded-lg text-sm uppercase font-semibold hover:bg-emerald-600"
+            elevation="5"
+            color="#059669"
+            style="height: 30px; font-weight: bolder"
+          >
+            Apply
+          </v-btn>
+          <v-btn
+            @click="cancelLink"
+            class="ml-2 px-4 py-1 font-semibold uppercase text-sm rounded-lg border-e-md border hover:bg-emerald-800 hover:shadow-md hover:text-white"
+            style="height: 30px; font-weight: bolder"
+            levation="5"
+          >Cancel
+          </v-btn>
+        </div>
       </bubble-menu>
 
       <floating-menu
@@ -966,11 +998,11 @@ export default {
       }
     },
 
-    toggleLinkInput() {
-      this.showLinkInput = !this.showLinkInput
-      this.linkUrl = ''
-      this.isLoading = false
-    },
+    // toggleLinkInput() {
+    //   this.showLinkInput = !this.showLinkInput
+    //   this.linkUrl = ''
+    //   this.isLoading = false
+    // },
 
     toggleLink() {
       if (this.editor.isActive('link')) {
@@ -997,6 +1029,10 @@ export default {
 
     cancelLink() {
       this.showLinkInput = false
+    },
+
+    cancelLinkYoutube() {
+      this.showLinkYoutubeInput = false
     },
 
     setFontFamily(fontFamily) {
@@ -1037,14 +1073,25 @@ export default {
       }
     },
 
-    addVideo() {
-      const url = prompt('Enter YouTube URL')
+    toggleLinkYoutube() {
+      if (this.editor.isActive('youtube')) {
+        this.editor.chain().focus().setYoutubeVideo('').run()
+      } else {
+        this.showLinkYoutubeInput = true
+        this.linkYoutube = ''
+      }
+    },
 
-      this.editor.commands.setYoutubeVideo({
-        src: url,
-        width: Math.max(320, parseInt(this.width, 10)) || 640,
-        height: Math.max(180, parseInt(this.height, 10)) || 480,
-      })
+    addVideo() {
+      if (this.linkYoutube) {
+        this.editor.commands.setYoutubeVideo({
+          src: this.linkYoutube,
+          width: Math.max(640, parseInt(this.width, 10)) || 640,
+          height: Math.max(480, parseInt(this.height, 10)) || 480,
+          controls: true,
+        })
+      }
+        this.showLinkYoutubeInput = false
     },
   },
 
@@ -1069,7 +1116,9 @@ export default {
       imageUrl: '',
       isLoading: false,
       showLinkInput: false,
+      showLinkYoutubeInput: false,
       linkUrl: '',
+      linkYoutube: '',
       linkInputStyle: {
         top: '0px',
         left: '0px',
@@ -1078,6 +1127,7 @@ export default {
       currentTextAlign: 'left',
       fonts: [
         { name: 'Inter', label: 'Inter' },
+        { name: 'Arial', label: 'Arial' },
         { name: 'Comic Sans MS, Comic Sans', label: 'Comic Sans' },
         { name: 'serif', label: 'Serif' },
         { name: 'monospace', label: 'Monospace' },
@@ -1459,6 +1509,7 @@ export default {
     border-radius: 0.25em;
     box-decoration-break: clone;
     padding: 0.1em 0.3em;
+    margin-left: 50px;
   }
   /* Youtube embed */
   div[data-youtube-video] {
@@ -1468,9 +1519,13 @@ export default {
     iframe {
       border: 0.5rem solid var(--black-contrast);
       display: block;
+      width: 800px;
+      height: 480px;
       min-height: 200px;
       min-width: 200px;
       outline: 0px solid transparent;
+      justify-content: center;
+      align-items: center;
     }
 
     &.ProseMirror-selectednode iframe {

@@ -11,7 +11,7 @@ spring boot e ReactJS.
 
 # Como funciona
 
-> A aplicação utiliza Spring Boot 3 e Java 21 e ReactJS + Hooks em toda a sua arquitetura.
+> A aplicação utiliza Spring Boot 3 e Java 21 e Vue 3 em toda a sua arquitetura.
 
 ### O que é que isso pode fazer?
 
@@ -35,6 +35,7 @@ Aqui estão as tecnologias usadas para a implementação:
 - **JUnit5** e **Mockito** para teste.
 - **MySql** para o banco de dados.
 - **Flyway** para as migrações de banco de dados.
+- **RabbitMQ** para as gerenciar os eventos de notificação.
 - **[modelmapper](https://modelmapper.org/)** para os DTOs.
 - **[spring-arg-resolver](https://github.com/tkaczmarzyk/specification-arg-resolver)**, para filtragem dinâmica de parâmetros.
 
