@@ -137,89 +137,88 @@
       </ul>
 
       <v-form ref="formRef" aria-label="Login form" @submit.prevent="login">
-      <v-text-field
-        v-model="form.email"
-        density="comfortable"
-        placeholder="Email address"
-        variant="outlined"
-      ></v-text-field>
+        <v-text-field
+          v-model="form.email"
+          density="comfortable"
+          placeholder="Email address"
+          variant="outlined"
+        ></v-text-field>
 
-      <div class="text-medium-emphasis d-flex align-center justify-space-between">
-        Password
-
-        <a
-          class="text-caption text-decoration-none text-blue"
-          href="#"
-          rel="noopener noreferrer"
-          target="_blank"
+        <div
+          class="text-medium-emphasis d-flex align-center justify-space-between"
         >
-          Forgot login password?</a>
-      </div>
+          Password
 
-      <v-text-field
-        v-model="form.password"
-        :append-inner-icon="visible ? 'fas fa-eye' : 'fas fa-eye-slash'"
-        :type="visible ? 'text' : 'password'"
-        density="comfortable"
-        placeholder="Enter your password"
-        variant="outlined"
-        @click:append-inner="visible = !visible"
-      ></v-text-field>
+          <a
+            class="text-caption text-decoration-none text-blue"
+            href="#"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Forgot login password?</a
+          >
+        </div>
+
+        <v-text-field
+          v-model="form.password"
+          :append-inner-icon="visible ? 'fas fa-eye' : 'fas fa-eye-slash'"
+          :type="visible ? 'text' : 'password'"
+          density="comfortable"
+          placeholder="Enter your password"
+          variant="outlined"
+          @click:append-inner="visible = !visible"
+        ></v-text-field>
 
         <v-card-actions class="justify-center">
           <div class="flex mb-2">
-            <v-btn
-              elevation="5"
-              variant="flat"
-            >
-              <i class="fa-brands fa-github-alt" style="color: #000000; font-size: 18px;"  />
+            <v-btn elevation="5" variant="flat">
+              <i
+                class="fa-brands fa-github-alt"
+                style="color: #000000; font-size: 18px"
+              />
             </v-btn>
-            <v-btn
-              elevation="5"
-              variant="flat"
-            >
-              <i class="fa-brands fa-google" style="color: #ff0000; font-size: 18px;" />
+            <v-btn elevation="5" variant="flat">
+              <i
+                class="fa-brands fa-google"
+                style="color: #ff0000; font-size: 18px"
+              />
             </v-btn>
-            <v-btn
-              elevation="5"
-              variant="flat"
-            >
-              <i class="fa-brands fa-linkedin" style="color: #2766d3; font-size: 18px;" />
+            <v-btn elevation="5" variant="flat">
+              <i
+                class="fa-brands fa-linkedin"
+                style="color: #2766d3; font-size: 18px"
+              />
             </v-btn>
           </div>
         </v-card-actions>
 
-      <v-card
-        class="mb-4"
-        color="surface-variant"
-        variant="tonal"
-      >
-<!--        <v-card-text class="text-medium-emphasis text-caption">-->
-<!--          Warning: After 3 consecutive failed login attempts, you account will be temporarily locked for three hours. If you must login now, you can also click "Forgot login password?" below to reset the login password.-->
-<!--        </v-card-text>-->
-      </v-card>
+        <v-card class="mb-4" color="surface-variant" variant="tonal">
+          <!--        <v-card-text class="text-medium-emphasis text-caption">-->
+          <!--          Warning: After 3 consecutive failed login attempts, you account will be temporarily locked for three hours. If you must login now, you can also click "Forgot login password?" below to reset the login password.-->
+          <!--        </v-card-text>-->
+        </v-card>
 
-      <v-btn
-        class="mb-4"
-        color="#059669"
-        size="large"
-        variant="flat"
-        active
-        block
-        elevation="5"
-        type="submit"
-        :disabled="!form.email || !form.password || isLoading"
-      >
-        Log In
-      </v-btn>
+        <v-btn
+          class="mb-4"
+          color="#059669"
+          size="large"
+          variant="flat"
+          active
+          block
+          elevation="5"
+          type="submit"
+          :disabled="!form.email || !form.password || isLoading"
+        >
+          Log In
+        </v-btn>
 
-      <v-card-text class="text-center">
-        <AppLink name="register">
-          <a class="text-emerald-600 text-decoration-none">
-            Sign up now <v-icon icon="fas fa-chevron-right"></v-icon>
-          </a>
-        </AppLink>
-      </v-card-text>
+        <v-card-text class="text-center">
+          <AppLink name="register">
+            <a class="text-emerald-600 text-decoration-none">
+              Sign up now <v-icon icon="fas fa-chevron-right"></v-icon>
+            </a>
+          </AppLink>
+        </v-card-text>
       </v-form>
     </v-card>
   </div>
@@ -246,7 +245,6 @@ const { updateUser } = useUserStore()
 const errors = ref<Record<string, any>>({})
 const isLoading = ref(false)
 const visible = ref(false)
-
 
 async function login() {
   errors.value = {}

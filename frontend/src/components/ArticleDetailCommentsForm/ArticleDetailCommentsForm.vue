@@ -6,7 +6,7 @@
     article.
   </p>
   <form v-else class="card comment-form" @submit.prevent="submitComment">
-    <v-card class="shadow-2xl" >
+    <v-card class="shadow-2xl">
       <v-textarea
         v-model="comment"
         color="light-green-darken-3"
@@ -28,8 +28,8 @@
             {{ profile.username }}
           </h3>
           <span class="text-sm text-gray-500">
-          {{ profile.bio }}
-        </span>
+            {{ profile.bio }}
+          </span>
         </div>
         <v-btn
           aria-label="Submit"

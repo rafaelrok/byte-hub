@@ -1,7 +1,10 @@
 <template>
   <div class="article-preview mr-4">
-    <v-card elevation="10" height="255px"
-            style="min-height: 255px; display: flex; flex-direction: column;">
+    <v-card
+      elevation="10"
+      height="255px"
+      style="min-height: 255px; display: flex; flex-direction: column"
+    >
       <v-row no-gutters align="stretch">
         <v-col cols="12" sm="8">
           <v-card-item>
@@ -11,7 +14,10 @@
                   name="profile"
                   :params="{ username: props.article.author.username }"
                 >
-                  <img :src="article.author.image" :alt="props.article.author.username" />
+                  <img
+                    :src="article.author.image"
+                    :alt="props.article.author.username"
+                  />
                 </AppLink>
                 <div class="info">
                   <AppLink
@@ -43,7 +49,7 @@
               </v-card-title>
               <v-card-subtitle>{{ article.description }}</v-card-subtitle>
             </div>
-            <v-card-text style="min-height: 255px;">
+            <v-card-text style="min-height: 255px">
               <div v-html="truncatedBody" class="truncated-text"></div>
               <AppLink
                 name="article"
@@ -87,9 +93,17 @@
                       elevation="5"
                       size="x-small"
                       append-icon="ion-heart"
-                      :aria-label="article.favorited ? 'Unfavorite article' : 'Favorite article'"
+                      :aria-label="
+                        article.favorited
+                          ? 'Unfavorite article'
+                          : 'Favorite article'
+                      "
                       class="btn btn-sm"
-                      :class="[article.favorited ? 'btn-primary' : 'btn-outline-primary']"
+                      :class="[
+                        article.favorited
+                          ? 'btn-primary'
+                          : 'btn-outline-primary',
+                      ]"
                       :disabled="favoriteProcessGoing"
                       @click="() => favoriteArticle()"
                     >
@@ -107,7 +121,7 @@
             height="255px"
             src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
             cover
-            style="min-height: 255px;"
+            style="min-height: 255px"
           ></v-img>
         </v-col>
       </v-row>
@@ -128,11 +142,12 @@ interface Emits {
 }
 
 const truncatedBody = computed(() => {
-  const maxLength = 200;
-  const bodyText = props.article.body.replace(/(<([^>]+)>)/gi, '');
-  return bodyText.length > maxLength ? bodyText.substring(0, maxLength) + '...' : bodyText;
-});
-
+  const maxLength = 200
+  const bodyText = props.article.body.replace(/(<([^>]+)>)/gi, '')
+  return bodyText.length > maxLength
+    ? bodyText.substring(0, maxLength) + '...'
+    : bodyText
+})
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()

@@ -18,7 +18,10 @@
           >
             <ArticlesListArticlePreview
               :article="article"
-              @update="(newArticle) => updateArticle(getOriginalIndex(index), newArticle)"
+              @update="
+                (newArticle) =>
+                  updateArticle(getOriginalIndex(index), newArticle)
+              "
             />
           </v-col>
         </v-row>
@@ -48,12 +51,12 @@
         </v-container>
       </div>
 
-<!--      <v-pagination-->
-<!--        v-model="currentPage"-->
-<!--        :length="totalPages"-->
-<!--        @update:model-value="changePage"-->
-<!--        :color="articles.length > 0 ? 'green-darken-3' : 'green-lighten-1'"-->
-<!--      ></v-pagination>-->
+      <!--      <v-pagination-->
+      <!--        v-model="currentPage"-->
+      <!--        :length="totalPages"-->
+      <!--        @update:model-value="changePage"-->
+      <!--        :color="articles.length > 0 ? 'green-darken-3' : 'green-lighten-1'"-->
+      <!--      ></v-pagination>-->
     </template>
   </div>
 </template>
@@ -76,7 +79,9 @@ const {
 const itemsPerPage = 5
 const currentPage = ref(1)
 
-const totalPages = computed(() => Math.ceil(articles.value.length / itemsPerPage))
+const totalPages = computed(() =>
+  Math.ceil(articles.value.length / itemsPerPage),
+)
 
 const paginatedArticles = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage

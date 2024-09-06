@@ -21,7 +21,7 @@ import { ref, watch } from 'vue'
 import { useSearch } from '@/composable/useSearch'
 
 const props = defineProps({
-  query: String
+  query: String,
 })
 
 const query = ref(props.query)

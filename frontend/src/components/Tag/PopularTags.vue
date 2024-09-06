@@ -9,12 +9,7 @@
         elevation="1"
         class="tag-pill mr-2 my-1"
       >
-        <AppLink
-          :key="tag"
-          name="tag"
-          :params="{ tag }"
-          :aria-label="tag"
-        >
+        <AppLink :key="tag" name="tag" :params="{ tag }" :aria-label="tag">
           <v-icon icon="fas fa-tag" start color="#059669"></v-icon>
           {{ tag }}
         </AppLink>

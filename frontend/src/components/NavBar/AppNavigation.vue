@@ -7,7 +7,11 @@
     >
       <AppLink class="navbar-brand" name="global-feed">
         <div class="flex items-center">
-          <img src="src/assets/img/logo_name_ban.png"  alt="ByteHub" style="height: 22px;"/>
+          <img
+            src="src/assets/img/logo_name_ban.png"
+            alt="ByteHub"
+            style="height: 22px"
+          />
         </div>
       </AppLink>
 
