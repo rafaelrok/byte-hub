@@ -4,7 +4,7 @@
       <li
         v-for="pageNumber in pagesCount"
         :key="pageNumber"
-        class="page-item"
+        class="page-item "
         :class="[{ active: isActive(pageNumber) }]"
       >
         <a

@@ -1,4 +1,4 @@
-# ![Projeto Comunidade Byte Hub](spring.png)
+# ![Projeto Comunidade Byte Hub](https://res.cloudinary.com/dkar9uu7g/image/upload/v1725651195/Developer/ByteHub/aykq2cmnid5ultwowebn.png)
 
 > ### Spring Boot 3, base de código Java 21 contendo exemplos do mundo real (CRUD, autenticação, padrões avançados, etc.) que aderem às especificações.
 

@@ -3,11 +3,13 @@
     class="top-0 fixed z-50 w-full px-2 py-2 navbar-expand-lg bg-white shadow-2xl"
   >
     <div
-      class="container px-4 mx-auto flex flex-wrap items-center justify-between"
+      class="container px-12 mx-auto flex flex-wrap items-center justify-between"
     >
-      <AppLink class="navbar-brand" name="global-feed"
-        >byteHub community</AppLink
-      >
+      <AppLink class="navbar-brand" name="global-feed">
+        <div class="flex items-center">
+          <img src="src/assets/img/logo_name_ban.png"  alt="ByteHub" style="height: 22px;"/>
+        </div>
+      </AppLink>
 
       <ul class="nav navbar-nav pull-xs-right align-center">
         <li v-for="link in navLinks" :key="link.name" class="nav-item mt-1">

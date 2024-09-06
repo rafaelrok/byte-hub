@@ -3,16 +3,22 @@
     <p class="font-semibold text-sm">Popular Tags</p>
 
     <div class="tag-list">
-      <AppLink
+      <v-chip
         v-for="tag in tags"
-        :key="tag"
-        name="tag"
-        :params="{ tag }"
-        :aria-label="tag"
-        class="tag-pill tag-default"
+        size="small"
+        elevation="1"
+        class="tag-pill mr-2 my-1"
       >
-        {{ tag }}
-      </AppLink>
+        <AppLink
+          :key="tag"
+          name="tag"
+          :params="{ tag }"
+          :aria-label="tag"
+        >
+          <v-icon icon="fas fa-tag" start color="#059669"></v-icon>
+          {{ tag }}
+        </AppLink>
+      </v-chip>
     </div>
   </div>
 </template>

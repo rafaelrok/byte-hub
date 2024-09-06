@@ -65,15 +65,16 @@
     </button>
 
     <div class="flex pt-2 ml-12">
-      <ul class="tag-list">
-        <li
-          v-for="tag in article.tagList"
-          :key="tag"
-          class="tag-default tag-pill tag-outline"
-        >
-          {{ tag }}
-        </li>
-      </ul>
+      <v-chip
+        v-for="tag in article.tagList"
+        :key="tag"
+        size="small"
+        elevation="2"
+        class="mt-2 mr-1 pl-3 pr-3 py-2"
+      >
+        <v-icon icon="fas fa-tag" start color="#059669"></v-icon>
+        {{ tag }}
+      </v-chip>
     </div>
   </div>
 </template>

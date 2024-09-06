@@ -15,7 +15,7 @@
   <div class="container page mb-10">
     <div class="article-subtitle">
       <h1 class="font-bold uppercase text-md">{{ article.title }}</h1>
-      <span class="font-semibold align-center">{{ article.description }}</span>
+      <span>{{ article.description }}</span>
     </div>
     <div class="row article-content">
       <div id="article-content" class="col-md-12" v-html="articleHandledBody" />
@@ -151,7 +151,10 @@ function updateArticle(newArticle: Article) {
 <style scoped lang="scss">
 :deep(.article-content) {
   font-family: Roboto, sans-serif;
-  font-size: 1px;
+  font-size: 1.1rem;
+}
+:deep(.article-content span) {
+  line-height: 1.6;
   font-weight: normal;
   font-style: normal;
 }
@@ -173,6 +176,8 @@ function updateArticle(newArticle: Article) {
 :deep(.article-content p) {
   margin-top: 1em;
   margin-bottom: 1em;
+  line-height: 1.6rem;
+  font-size: 1.1rem;
 }
 :deep(.article-content strong) {
   font-weight: bold;
@@ -203,6 +208,7 @@ function updateArticle(newArticle: Article) {
   background: #282c34;
   border-radius: 0.5rem;
   font-family: 'JetBrainsMono', monospace;
+  font-size: 0.9rem;
   margin-left: 10rem;
   margin-right: 10rem;
   padding: 0.75rem 1rem;
@@ -320,6 +326,8 @@ function updateArticle(newArticle: Article) {
 }
 /* Youtube embed */
 :deep(.article-content div[data-youtube-video]) {
+  justify-content: center;
+  align-items: center;
   cursor: move;
   padding-right: 1.5rem;
   margin-left: 160px;

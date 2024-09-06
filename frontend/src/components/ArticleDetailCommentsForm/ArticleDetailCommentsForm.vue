@@ -6,33 +6,43 @@
     article.
   </p>
   <form v-else class="card comment-form" @submit.prevent="submitComment">
-    <div class="card-block">
-      <textarea
+    <v-card class="shadow-2xl" >
+      <v-textarea
         v-model="comment"
+        color="light-green-darken-3"
+        variant="filled"
+        auto-grow
         aria-label="Write comment"
         class="form-control"
         placeholder="Write a comment..."
         :rows="3"
       />
-    </div>
-    <div class="flex card-footer">
-      <img
-        :src="profile.image"
-        class="comment-author-img"
-        :alt="profile.username"
-      />
-      <h3 class="text-subtitle-2 text-gray-400 pl-2 py-1">
-        {{ profile.username }}
-      </h3>
-      <button
-        aria-label="Submit"
-        type="submit"
-        :disabled="comment === ''"
-        class="btn btn-sm btn-primary ml-auto"
-      >
-        Comment
-      </button>
-    </div>
+      <div class="flex card-footer shadow-2xl">
+        <img
+          :src="profile.image"
+          class="comment-author-img"
+          :alt="profile.username"
+        />
+        <div class="flex flex-col pl-2">
+          <h3 class="text-subtitle-2 text-gray-400">
+            {{ profile.username }}
+          </h3>
+          <span class="text-sm text-gray-500">
+          {{ profile.bio }}
+        </span>
+        </div>
+        <v-btn
+          aria-label="Submit"
+          type="submit"
+          :disabled="comment === ''"
+          class="btn btn-sm btn-primary ml-auto"
+          elevation="5"
+          variant="plain"
+        >
+          Comment
+        </v-btn>
+      </div>
+    </v-card>
   </form>
 </template>
 

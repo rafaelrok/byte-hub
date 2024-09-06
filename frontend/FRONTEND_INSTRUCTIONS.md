@@ -56,8 +56,8 @@ Alternatively, if you want to make modifications to the theme, check out the [th
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Conduit</title>
-    <!-- Import Ionicon icons & Google Fonts our Bootstrap theme relies on -->
+    <title>ByteHub - Community</title>
+
     <link
       href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
       rel="stylesheet"

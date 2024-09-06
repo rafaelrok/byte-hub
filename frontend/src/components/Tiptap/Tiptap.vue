@@ -1002,12 +1002,6 @@ export default {
       }
     },
 
-    // toggleLinkInput() {
-    //   this.showLinkInput = !this.showLinkInput
-    //   this.linkUrl = ''
-    //   this.isLoading = false
-    // },
-
     toggleLink() {
       if (this.editor.isActive('link')) {
         this.editor.chain().focus().unsetLink().run()

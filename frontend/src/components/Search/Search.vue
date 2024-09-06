@@ -20,20 +20,22 @@
 import { ref, watch } from 'vue'
 import { useSearch } from '@/composable/useSearch'
 
+const props = defineProps({
+  query: String
+})
+
+const query = ref(props.query)
+const searchResults = ref([])
 const { fetchSearch, search } = useSearch()
-const query = ref('')
 
 const onSearch = async () => {
   if (query.value) {
-    await fetchSearch()
+    await fetchSearch(query.value)
+    searchResults.value = search.value
+  } else {
+    searchResults.value = []
   }
 }
 
-watch(query, async (newQuery) => {
-  if (newQuery) {
-    await onSearch()
-  }
-})
-
-const searchResults = search
+watch(query, onSearch)
 </script>

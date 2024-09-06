@@ -16,14 +16,14 @@
           </Suspense>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 mt-12">
           <div class="sidebar">
             <Suspense>
               <PopularTags />
               <template #fallback> Popular tags are downloading... </template>
             </Suspense>
             <Suspense>
-              <Search />
+              <Search @update-query="updateQuery" />
               <template #fallback> Popular search are downloading... </template>
             </Suspense>
           </div>
@@ -34,17 +34,14 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import ArticlesList from '@/components/ArticleList/ArticlesList.vue'
 import PopularTags from '@/components/Tag/PopularTags.vue'
 import Search from '@/components/Search/Search.vue'
-</script>
 
-<!--<style lang="sass">-->
-<!--  .home-page-->
-<!--    .banner-->
-<!--      background-color: #2b2d30-->
-<!--      text-align: center-->
-<!--      background-size: cover-->
-<!--      background-position: center-->
-<!--      //padding: 150px 0-->
-<!--</style>-->
+const searchQuery = ref([])
+
+function updateQuery(query) {
+  searchQuery.value = query
+}
+</script>

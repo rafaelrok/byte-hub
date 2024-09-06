@@ -1,10 +1,3 @@
-/*
-  Feel free to include your own styles and/or override Conduit/Bootstrap
-  SASS variables.
-
-  More info on how to modify the Conduit SASS styles can be found at
-  https://github.com/GoThinkster/conduit-sass
-*/
 .logo-font {
   font-family: 'Titillium Web', sans-serif;
 }
@@ -744,8 +737,8 @@ pre code {
 .container {
   margin-left: auto;
   margin-right: auto;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 35px;
+  padding-right: 35px;
 }
 @media (min-width: 544px) {
   .container {
@@ -6741,7 +6734,7 @@ a.text-danger:hover {
 }
 
 ul.tag-list {
-  padding-left: 0px !important;
+  padding-left: 0 !important;
   display: inline-block;
   list-style: none !important;
 }
@@ -6830,6 +6823,35 @@ footer .attribution {
   text-decoration: inherit !important;
 }
 
+.article-meta-card {
+  display: block;
+  position: relative;
+  font-weight: 300;
+}
+
+.article-meta-card img {
+  display: inline-block;
+  vertical-align: middle;
+  height: 32px;
+  width: 32px;
+  border-radius: 30px;
+}
+.article-meta-card .info {
+  margin: 0 1.5rem 0 0.3rem;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1rem;
+}
+.article-meta-card .info .author {
+  display: block;
+  font-weight: 500 !important;
+}
+.article-meta-card .info .date {
+  color: #bbb;
+  font-size: 0.8rem;
+  display: block;
+}
+
 .article-meta {
   display: block;
   position: relative;
@@ -6861,8 +6883,22 @@ footer .attribution {
 
 .article-preview {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 1.5rem 0;
+  padding: 1rem 0;
 }
+
+.article-preview .truncated-text {
+  max-height: 4.0em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  font-style: inherit;
+  color: #555555;
+}
+
 .article-preview .article-meta {
   margin: 0 0 1rem 0;
 }
@@ -6872,8 +6908,12 @@ footer .attribution {
   margin-bottom: 3px;
 }
 .article-preview .preview-link p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limita a 2 linhas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 300;
-  font-size: 24px;
   color: #999;
   margin-bottom: 15px;
   font-size: 1rem;
@@ -6886,10 +6926,16 @@ footer .attribution {
   color: #bbb;
   vertical-align: middle;
 }
+.article-preview .preview-link span:hover {
+  color: #5aba9c;
+}
 .article-preview .preview-link ul {
-  float: right;
-  max-width: 50%;
+  display: flex;
+  /*float: right;*/
+  /*max-width: 50%;*/
   vertical-align: top;
+  margin-top: 2px;
+  margin-bottom: 15px;
 }
 .article-preview .preview-link ul li {
   font-weight: 300;
@@ -6961,7 +7007,7 @@ footer .attribution {
 .article-subtitle {
   font-size: 1.5rem;
   font-weight: 300;
-  padding: 20px 0 40px 160px;
+  padding: 20px 0 10px 160px;
 }
 
 .article-page .article-content p {
@@ -6998,7 +7044,7 @@ footer .attribution {
   padding: 0;
 }
 .article-page .comment-form .card-block textarea {
-  border: 0px;
+  border: 0;
   padding: 1.25rem;
 }
 

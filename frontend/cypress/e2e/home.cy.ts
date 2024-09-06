@@ -17,7 +17,7 @@ describe('homepage', () => {
   it('should can access home page', () => {
     cy.visit(ROUTES.HOME)
 
-    cy.get('h1.logo-font').should('contain.text', 'conduit')
+    cy.get('h1.logo-font').should('contain.text', 'bytehub - community')
   })
 
   it('should highlight Global Feed when home page loaded', () => {

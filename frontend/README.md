@@ -1,19 +1,18 @@
-# ![RealWorld Example App](logo.png)
+# ![ByteHub Community](logo.png)
 
 [![Codecov branch](https://img.shields.io/codecov/c/github/mutoe/vue3-realworld-example-app/master?logo=codecov&style=for-the-badge)](https://app.codecov.io/gh/mutoe/vue3-realworld-example-app/branch/master)
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/mutoe/vue3-realworld-example-app/test.yml?logo=github&style=for-the-badge)](https://github.com/mutoe/vue3-realworld-example-app/actions?query=branch%3Amaster)
 [![code style](https://img.shields.io/badge/Code_Style-Anthony_Fu-333?style=for-the-badge&logo=eslint)](https://github.com/anthony/eslint-config)
 
-> ### [Vue3](https://v3.vuejs.org/) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+> ### [Vue3](https://v3.vuejs.org/) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the spec and API.
 
-- [Demo](https://vue3-realworld-example-app-mutoe.vercel.app)
-- [RealWorld](https://github.com/gothinkster/realworld)
+- [Demo]()
 
 This codebase was created to demonstrate a fully fledged fullstack application built with **Vue3** including CRUD operations, authentication, routing, pagination, and more.
 
 We've gone to great lengths to adhere to the **Vue3** community styleguides & best practices.
 
-For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
+For more information on how to this works with other frontends/backends, head over to the repo.
 
 # What works?
 
@@ -54,22 +53,3 @@ pnpm test:unit:ci
 pnpm test:e2e
 pnpm test:e2e:ci
 ```
-
-# Contributors
-
-<a href="https://github.com/mutoe/vue3-realworld-example-app/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=mutoe/vue3-realworld-example-app" />
-</a>
-
-Made with [contributors-img](https://contributors-img.web.app).
-
-## Vue related implementations of the Realworld app
-
-- [gothinkster/vue-realworld-example-app](https://github.com/gothinkster/vue-realworld-example-app) - vue2, js
-- [AlexBrohshtut/vue-ts-realworld-app](https://github.com/AlexBrohshtut/vue-ts-realworld-app) - vue2, ts, class-component
-- [devJang/nuxt-realworld](https://github.com/devJang/nuxt-realworld) - nuxt, ts, composition api
-- [levchak0910/vue3-ssr-realworld-example-app](https://github.com/levchak0910/vue3-ssr-realworld-example-app) - vue3, ssr
-
-## Sponsor
-
-Thanks **JetBrains** for providing IDE support!

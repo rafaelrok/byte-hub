@@ -19,9 +19,9 @@
     <div class="container mx-auto px-4">
       <div class="flex flex-wrap text-center lg:text-left">
         <div class="w-full lg:w-6/12 px-4">
-          <h4 class="text-3xl text-emerald-600 font-semibold">
-            Let's keep in touch!
-          </h4>
+          <div style="margin-left: 210px; margin-bottom: 10px;">
+            <img src="src/assets/img/logo_name_complete_new.png"  alt="ByteHub" style="height: 32px;"/>
+          </div>
           <h5 class="text-lg mt-0 mb-2 text-blueGray-600">
             Come and learn a little more about us on other platforms.
           </h5>

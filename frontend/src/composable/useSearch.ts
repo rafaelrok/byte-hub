@@ -4,11 +4,12 @@ import { api } from 'src/services'
 export function useSearch() {
   const search = ref<string[]>([])
 
-  async function fetchSearch(): Promise<void> {
+  async function fetchSearch(query: string): Promise<void> {
     search.value = []
-    search.value = await api.articles
-      .getArticles()
-      .then(({ data }) => data.articles.map((article) => article.title))
+    const { data } = await api.articles.getArticles()
+    search.value = data.articles
+      .filter(article => article.title.toLowerCase().includes(query.toLowerCase()))
+      .map(article => article.title)
   }
 
   return {
