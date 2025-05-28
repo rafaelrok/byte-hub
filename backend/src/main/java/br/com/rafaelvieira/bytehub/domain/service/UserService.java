@@ -1,6 +1,7 @@
 package br.com.rafaelvieira.bytehub.domain.service;
 
 import br.com.rafaelvieira.bytehub.api.security.AuthUtils;
+import br.com.rafaelvieira.bytehub.domain.enums.RegistrationMethod;
 import br.com.rafaelvieira.bytehub.domain.exception.EmailNotFoundException;
 import br.com.rafaelvieira.bytehub.domain.exception.EmailTakenException;
 import br.com.rafaelvieira.bytehub.domain.exception.UsernameTakenException;
@@ -10,14 +11,19 @@ import br.com.rafaelvieira.bytehub.domain.repository.ProfileRepository;
 import br.com.rafaelvieira.bytehub.domain.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    @Resource
     private final AuthUtils authUtils;
     private final EntityManager entityManager;
     private final UserRepository userRepository;
@@ -25,8 +31,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ProfileRepository profileRepository;
 
+//    @Transactional(readOnly = true)
+//    public User getCurrentUser() {
+//        return getByEmail(authUtils.getCurrentUserEmail());
+//    }
+
+    @Transactional(readOnly = true)
     public User getCurrentUser() {
-        return getByEmail(authUtils.getCurrentUserEmail());
+        String userEmail = authUtils.getCurrentUserEmail();
+        return userRepository.findByEmail(userEmail).orElseThrow(EmailNotFoundException::new);
     }
 
     @Transactional(readOnly = true)
@@ -36,13 +49,13 @@ public class UserService {
 
     @Transactional
     public User save(User user, Profile profile) {
-        //so that the profile repository doesn't throw a duplicate row exception when trying to find by profile.username
         entityManager.detach(user);
 
         checkUserAvailable(user, profile);
 
         if (user.getId() == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setMethod(RegistrationMethod.MANUAL);
             user.setProfile(profile);
         }
 
@@ -75,5 +88,9 @@ public class UserService {
     public void setToken(User user, String token) {
         user.setToken(token);
         userRepository.save(user);
+    }
+
+    public User findUserSocialLoginByUserUid(final String userUid){
+        return userRepository.findUserSocialLoginByUserUid(userUid);
     }
 }

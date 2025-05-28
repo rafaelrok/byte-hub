@@ -1,134 +1,25 @@
-<!--<template>-->
-<!--  <div class="container mx-auto px-4 pt-24 h-full">-->
-<!--    <div class="flex content-center items-center justify-center h-full">-->
-<!--      <div class="w-full lg:w-4/12 px-4">-->
-<!--        <div-->
-<!--          class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-200 border-blueGray-500"-->
-<!--        >-->
-<!--          <div class="rounded-t mb-0 px-6 py-6">-->
-<!--            <div class="text-center mb-3">-->
-<!--              <h6 class="text-green-accent-4 text-sm font-bold">-->
-<!--                Sign in with-->
-<!--              </h6>-->
-<!--            </div>-->
-<!--            <div class="btn-wrapper text-center">-->
-<!--              <button-->
-<!--                class="bg-white active:bg-blueGray-50 text-gray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"-->
-<!--                type="button"-->
-<!--              >-->
-<!--                <img alt="..." class="w-5 mr-1" :src="github" />-->
-<!--                Github-->
-<!--              </button>-->
-<!--              <button-->
-<!--                class="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"-->
-<!--                type="button"-->
-<!--              >-->
-<!--                <img alt="..." class="w-5 mr-1" :src="google" />-->
-<!--                Google-->
-<!--              </button>-->
-<!--            </div>-->
-<!--            <hr class="mt-6 border-b-1 border-blueGray-300" />-->
-<!--          </div>-->
-<!--          <div class="flex-auto px-4 lg:px-10 py-10 pt-0">-->
-<!--            <div class="text-green-accent-4 text-center mb-3 font-bold">-->
-<!--              <small>Or sign in with credentials</small>-->
-<!--            </div>-->
-
-<!--            <ul class="error-messages">-->
-<!--              <li v-for="(error, field) in errors" :key="field">-->
-<!--                {{ field }} {{ error ? error[0] : '' }}-->
-<!--              </li>-->
-<!--            </ul>-->
-
-<!--            <form ref="formRef" aria-label="Login form" @submit.prevent="login">-->
-<!--              <div class="relative w-full mb-3">-->
-<!--                <label-->
-<!--                  class="block uppercase text-green-accent-4 text-xs font-bold mb-2"-->
-<!--                  htmlFor="grid-password"-->
-<!--                >-->
-<!--                  Email-->
-<!--                </label>-->
-<!--                <input-->
-<!--                  v-model="form.email"-->
-<!--                  required-->
-<!--                  type="email"-->
-<!--                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"-->
-<!--                  placeholder="Email"-->
-<!--                />-->
-<!--              </div>-->
-
-<!--              <div class="relative w-full mb-3">-->
-<!--                <label-->
-<!--                  class="block uppercase text-green-accent-4 text-xs font-bold mb-2"-->
-<!--                  htmlFor="grid-password"-->
-<!--                >-->
-<!--                  Password-->
-<!--                </label>-->
-<!--                <input-->
-<!--                  v-model="form.password"-->
-<!--                  required-->
-<!--                  type="password"-->
-<!--                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"-->
-<!--                  placeholder="Password"-->
-<!--                />-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                <label class="inline-flex items-center cursor-pointer">-->
-<!--                  <input-->
-<!--                    id="customCheckLogin"-->
-<!--                    type="checkbox"-->
-<!--                    class="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"-->
-<!--                  />-->
-<!--                  <span class="ml-2 text-sm font-semibold text-green-accent-4">-->
-<!--                    Remember me-->
-<!--                  </span>-->
-<!--                </label>-->
-<!--              </div>-->
-
-<!--              <div class="text-center mt-6">-->
-<!--                <button-->
-<!--                  class="bg-green-accent-4 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"-->
-<!--                  type="submit"-->
-<!--                  :disabled="!form.email || !form.password || isLoading"-->
-<!--                >-->
-<!--                  <span v-if="isLoading">Loading...</span>-->
-<!--                  <span v-else>Sign In</span>-->
-<!--                </button>-->
-<!--              </div>-->
-<!--            </form>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="flex flex-wrap mt-6 relative">-->
-<!--          <div class="w-1/2">-->
-<!--            <a href="javascript:void(0)" class="text-blueGray-200">-->
-<!--              <small>Forgot password?</small>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--          <div class="w-1/2 text-right">-->
-<!--            <AppLink name="register" class="text-blueGray-200">-->
-<!--              <small>Create new account</small>-->
-<!--            </AppLink>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</template>-->
-
 <template>
-  <div class="mt-20">
+  <div class="mt-20 align-center">
     <v-card
       class="mx-auto pa-12 pb-8"
       elevation="10"
       max-width="448"
       rounded="lg"
+      variant="tonal"
     >
+      <div class="banner-login">
+        <v-label>
+          <span class="text-2xl font-semibold">Login</span>
+        </v-label>
+      </div>
+
       <v-img
         class="mx-auto mt-1 mb-12"
         max-width="228"
-        src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"
+        src="https://res.cloudinary.com/dkar9uu7g/image/upload/v1726700106/Developer/ByteHub/F_name_kc5arc.png"
       ></v-img>
-      <div class="text-medium-emphasis">Account</div>
+
+      <div class="text-medium-emphasis">Email</div>
 
       <ul class="error-messages">
         <li v-for="(error, field) in errors" :key="field">
@@ -141,7 +32,9 @@
           v-model="form.email"
           density="comfortable"
           placeholder="Email address"
-          variant="outlined"
+          variant="underlined"
+          :error-messages="errors.email"
+          required
         ></v-text-field>
 
         <div
@@ -165,29 +58,22 @@
           :type="visible ? 'text' : 'password'"
           density="comfortable"
           placeholder="Enter your password"
-          variant="outlined"
+          variant="underlined"
           @click:append-inner="visible = !visible"
+          :error-messages="errors.password"
+          required
         ></v-text-field>
 
         <v-card-actions class="justify-center">
           <div class="flex mb-2">
-            <v-btn elevation="5" variant="flat">
-              <i
-                class="fa-brands fa-github-alt"
-                style="color: #000000; font-size: 18px"
-              />
+            <v-btn elevation="5" variant="flat" class="transition-transform duration-300 hover:scale-110 hover:bg-gray-200" @click="handleSocialLogin('github')">
+              <i class="fa-brands fa-github-alt" style="color: #000000; font-size: 18px" />
             </v-btn>
-            <v-btn elevation="5" variant="flat">
-              <i
-                class="fa-brands fa-google"
-                style="color: #ff0000; font-size: 18px"
-              />
+            <v-btn elevation="5" variant="flat" class="transition-transform duration-300 hover:scale-110 hover:bg-red-100" @click="handleSocialLogin('google')">
+              <i class="fa-brands fa-google" style="color: #ff0000; font-size: 18px" />
             </v-btn>
-            <v-btn elevation="5" variant="flat">
-              <i
-                class="fa-brands fa-linkedin"
-                style="color: #2766d3; font-size: 18px"
-              />
+            <v-btn elevation="5" variant="flat" class="transition-transform duration-300 hover:scale-110 hover:bg-blue-100" @click="handleSocialLogin('microsoft')">
+              <i class="fa-brands fa-microsoft" style="color: #2766d3; font-size: 18px" />
             </v-btn>
           </div>
         </v-card-actions>
@@ -205,6 +91,7 @@
           variant="flat"
           active
           block
+          :loading="isLoading"
           elevation="5"
           type="submit"
           :disabled="!form.email || !form.password || isLoading"
@@ -226,12 +113,11 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import * as yup from 'yup'
 import { routerPush } from '@/router.ts'
 import { api, isFetchError } from '@/services'
 import type { LoginUser } from '@/services/api.ts'
 import { useUserStore } from '@/store/user.ts'
-import github from '@/assets/img/github.svg'
-import google from '@/assets/img/google.svg'
 import AppLink from '@/components/AppLink/AppLink.vue'
 
 const formRef = ref<HTMLFormElement | null>(null)
@@ -246,6 +132,11 @@ const errors = ref<Record<string, any>>({})
 const isLoading = ref(false)
 const visible = ref(false)
 
+const schema = yup.object({
+  email: yup.string().required('Email is required').email('Invalid email format'),
+  password: yup.string().required('Password is required'),
+})
+
 async function login() {
   errors.value = {}
   isLoading.value = true
@@ -256,19 +147,94 @@ async function login() {
   }
 
   try {
+    await schema.validate(form, { abortEarly: false })
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
     const result = await api.users.login({ user: form })
     updateUser(result.data.user)
     await routerPush('global-feed')
   } catch (error) {
-    if (isFetchError(error)) {
+    if (error instanceof yup.ValidationError) {
+      errors.value = error.inner.reduce((acc, err) => {
+        if (err.path) {
+          acc[err.path] = err.message
+        }
+        return acc
+      }, {} as Record<string, string>)
+    } else if (isFetchError(error)) {
       errors.value = error.error?.errors || {
-        message: 'Erro desconhecido, por favor tente novamente.',
+        message: 'Unknown error, please try again.',
       }
-      return
+    } else {
+      console.error(error)
+      errors.value = { message: 'An unexpected error occurred.' }
     }
-    console.error(error)
   } finally {
     isLoading.value = false
   }
 }
+
+async function handleSocialLogin(provider: string) {
+  errors.value = {}
+  isLoading.value = true
+
+  try {
+    const response = await api.socialUsers.loginSocial({ provider })
+
+    if (response.data.redirectUrl) {
+      window.location.href = response.data.redirectUrl
+    } else if (response.data.token) {
+      await processSocialLoginResult(response.data.token)
+    }
+  } catch (error) {
+    console.error('Erro ao iniciar login social:', error)
+    if (isFetchError(error)) {
+      errors.value = error.error?.errors || {
+        message: 'Erro ao iniciar login social. Por favor, tente novamente.',
+      }
+    } else {
+      errors.value = { message: 'Um erro inesperado ocorreu durante o login social.' }
+    }
+  } finally {
+    isLoading.value = false
+  }
+}
+
+async function processSocialLoginResult(token: string) {
+  try {
+    const userDetails = await api.socialUsers.getUserDetails({ token })
+    updateUser(userDetails.data.user)
+
+    await routerPush('global-feed')
+  } catch (error) {
+    console.error('Erro ao processar resultado do login social:', error)
+    if (isFetchError(error)) {
+      errors.value = error.error?.errors || {
+        message: 'Erro ao processar login social. Por favor, tente novamente.',
+      }
+    } else {
+      errors.value = { message: 'Um erro inesperado ocorreu ao processar o login social.' }
+    }
+  }
+}
 </script>
+
+<style scoped>
+.banner-login {
+  margin-left: 8.5rem;
+}
+.error-messages {
+  list-style: none;
+  padding: 0;
+}
+.error-messages li {
+  color: #ff0000;
+}
+.error-messages li::before {
+  content: '⚠️ ';
+}
+.error-messages li:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+</style>

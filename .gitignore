@@ -6,6 +6,8 @@
 
 !backend/src/main/resources/application.properties
 !backend/src/main/resources/application-dev.properties
+!backend/src/main/resources/firebase-service-account.json
+!backend/src/main/resources/private-key.json
 
 node_modules
 
@@ -17,6 +19,7 @@ backend/.project
 backend/.settings
 backend/.springBeans
 backend/.sts4-cache
+backend/.env
 
 ### IntelliJ IDEA ###
 .idea
@@ -26,7 +29,7 @@ backend/.sts4-cache
 
 /Qodana.key
 /.env
-
+.env
 ### NetBeans ###
 !backend/nbproject/private/
 !backend/nbbuild/

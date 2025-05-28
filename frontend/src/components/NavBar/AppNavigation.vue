@@ -8,7 +8,7 @@
       <AppLink class="navbar-brand" name="global-feed">
         <div class="flex items-center">
           <img
-            src="src/assets/img/logo_name_ban.png"
+            src="src/assets/img/F_name.png"
             alt="ByteHub"
             style="height: 22px"
           />

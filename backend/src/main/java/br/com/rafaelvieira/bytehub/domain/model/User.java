@@ -1,5 +1,6 @@
 package br.com.rafaelvieira.bytehub.domain.model;
 
+import br.com.rafaelvieira.bytehub.domain.enums.RegistrationMethod;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -18,14 +19,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String userProvideUid;
     private String email;
     private String token;
     private String password;
+    private Boolean emailVerified;
+
+    @Enumerated(EnumType.STRING)
+    private RegistrationMethod method;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Profile profile;
 
+    private String provider;
 
     @Override
     public final boolean equals(Object o) {

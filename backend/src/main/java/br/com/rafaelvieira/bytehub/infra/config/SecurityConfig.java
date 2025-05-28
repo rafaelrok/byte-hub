@@ -37,7 +37,13 @@ public class SecurityConfig {
     };
 
     private static final String[] PUBLIC_WRITE_ENDPOINTS = {
-            "/users", "/users/login"
+            "/users",
+            "/users/login",
+            "/user/refresh-token",
+            "/users/auth/create",
+            "/users/auth/login",
+            "/users/auth/refresh-token",
+            "/users/auth/logout"
     };
 
     @Bean

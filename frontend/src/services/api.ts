@@ -1,12 +1,12 @@
 /* eslint-disable */
 /* tslint:disable */
 /*
- * ---------------------------------------------------------------
- * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
- * ##                                                           ##
- * ## AUTHOR: acacode                                           ##
- * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
- * ---------------------------------------------------------------
+ * -----------------------------------------------------------------
+ * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API          ##
+ * ##                                                             ##
+ * ## AUTHOR: rafaelrok                                           ##
+ * ## SOURCE: https://github.com/rafaelrok/swagger-typescript-api ##
+ * -----------------------------------------------------------------
  */
 
 export interface LoginUser {
@@ -20,6 +20,25 @@ export interface NewUser {
   email: string
   /** @format password */
   password: string
+}
+
+export interface NewUserSocial {
+  username: string
+  email: string
+  /** @format password */
+  password: string
+  userProvideUid: string
+  provider: string
+}
+
+export interface UserSocial {
+  id: number
+  email: string
+  token: string
+  username: string
+  bio: string
+  image: string
+  provider: string
 }
 
 export interface User {
@@ -362,13 +381,13 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title ByteHub Conduit API
+ * @title ByteHub Community API
  * @version 1.0.0
  * @license MIT License (https://opensource.org/licenses/MIT)
  * @baseUrl https://api.ByteHub.io/api
  * @contact ByteHub (https://www.ByteHub.how)
  *
- * Conduit API documentation
+ * Community API documentation
  */
 export class Api<
   SecurityDataType extends unknown,
@@ -420,6 +439,58 @@ export class Api<
         GenericErrorModel
       >({
         path: `/users`,
+        method: 'POST',
+        body: data,
+        ...params,
+      }),
+  }
+  socialUsers = {
+    /**
+     * @description LoginSocial for existing user em firebase
+     *
+     * @tags UserSocial and Authentication
+     * @name LoginSocial
+     * @summary Existing user loginSocial
+     * @request POST:/users/auth/login
+     */
+    loginSocial: (
+      data: {
+        user: LoginUser
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        {
+          user: UserSocial
+        },
+        GenericErrorModel
+      >({
+        path: `/users/auth/login`,
+        method: 'POST',
+        body: data,
+        ...params,
+      }),
+
+    /**
+     * @description Register a new user social
+     *
+     * @tags User and Authentication social
+     * @name CreateUserSocial
+     * @request POST:/users/auth/create
+     */
+    createUserSocial: (
+      data: {
+        user: NewUserSocial
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        {
+          user: UserSocial
+        },
+        GenericErrorModel
+      >({
+        path: `/users/auth/create`,
         method: 'POST',
         body: data,
         ...params,
