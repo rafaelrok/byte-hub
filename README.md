@@ -1,51 +1,117 @@
 # ![Projeto Comunidade Byte Hub](https://res.cloudinary.com/dkar9uu7g/image/upload/v1725651195/Developer/ByteHub/aykq2cmnid5ultwowebn.png)
 
-> ### Spring Boot 3, base de código Java 21 contendo exemplos do mundo real (CRUD, autenticação, padrões avançados, etc.) que aderem às especificações.
+## Introdução
 
-### [Demonstração](http:localhost:8080)
+O ByteHub é um projeto de código aberto que implementa um aplicativo fullstack completo utilizando tecnologias modernas como Spring Boot, Vue.js e várias outras ferramentas e bibliotecas. Este projeto serve como um exemplo real de aplicação que abrange operações CRUD, autenticação, roteamento, paginação e muito mais.
 
-Este projeto foi criada para demonstrar um aplicativo fullstack completo construído com Spring Boot e ReactJS, incluindo operações CRUD, autenticação, roteamento, paginação e muito mais.
+## Demonstração
 
-Aqui com todo meu esforço para demonstrar o que é que isso pode fazer, envolvendo as melhores praticas da comunidade do
-spring boot e ReactJS.
+[Link para a Demonstração](http://localhost:8080)
 
-# Como funciona
+## Funcionalidades
 
-> A aplicação utiliza Spring Boot 3 e Java 21 e Vue 3 em toda a sua arquitetura.
+Aqui estão as principais funcionalidades da aplicação:
 
-### O que é que isso pode fazer?
+- **Autenticação de Usuário via JWT**: Permite que os usuários façam login com segurança usando JSON Web Tokens (JWT).
+- **Gerenciamento de Usuários**: Operações para criar, ler e atualizar perfis de usuário.
+- **Gerenciamento de Artigos**: Permite que os usuários criem, leiam e excluam artigos.
+- **Gerenciamento de Comentários**: Permite que os usuários criem, leiam e excluam comentários em artigos.
+- **Listagem de Artigos**: Oferece listas paginadas de artigos com parâmetros `offset` e `limit`.
+- **Favoritar Artigos**: Permite que os usuários marquem artigos como favoritos.
+- **Seguimento de Usuários**: Permite que os usuários sigam e deixem de seguir perfis de outros usuários.
+- **Feed de Artigos**: Oferece um endpoint de feed para ver artigos de usuários seguidos.
 
-Aqui estão as funcionalidades da API:
+## Tecnologias Utilizadas
 
-- **Autenticação de usuário via JWT:** Permite que os usuários façam login com segurança usando JSON Web Tokens (JWT).
-- **Users:** Fornece operações para criar, ler e atualizar perfis de usuário.
-- **Artigos:** Permite que os usuários criem, leiam e excluam artigos.
-- **Comentários:** Permite que os usuários criem, leiam e excluam comentários em artigos.
-- **Article Listings:** Oferece listas paginadas de artigos com parâmetros `offset` e `limit`.
-- **Favorito de artigos:** Permite que os usuários marquem artigos como favoritos.
-- **User Following:** Permite que os usuários sigam e deixem de seguir perfis de outros usuários.
-- **Article Feed:** Oferece um endpoint de feed para ver artigos de usuários seguidos.
+### Backend
 
-### O que está por baixo do capô?
+- **Spring Boot 3**
+- **Java 21**
+- **Spring Data JPA**: Para gerenciamento eficiente de dados.
+- **Spring Security**: Com tokens JWT para autenticação.
+- **JUnit5 e Mockito**: Para testes.
+- **MySQL**: Para o banco de dados.
+- **Flyway**: Para migrações de banco de dados.
+- **RabbitMQ**: Para gerenciar eventos de notificação.
+- **ModelMapper**: Para mapeamento de DTOs.
+- **Spring Arg Resolver**: Para filtragem dinâmica de parâmetros.
 
-Aqui estão as tecnologias usadas para a implementação:
+### Frontend
 
-- **Spring Data JPA** para gerenciamento eficiente de dados.
-- **Spring Security** com **tokens JWT** para autenticação.
-- **JUnit5** e **Mockito** para teste.
-- **MySql** para o banco de dados.
-- **Flyway** para as migrações de banco de dados.
-- **RabbitMQ** para as gerenciar os eventos de notificação.
-- **[modelmapper](https://modelmapper.org/)** para os DTOs.
-- **[spring-arg-resolver](https://github.com/tkaczmarzyk/specification-arg-resolver)**, para filtragem dinâmica de parâmetros.
+- **Vue 3**
+- **Vite**: Ferramenta de construção rápida.
+- **Vue Router**: Gerenciamento de rotas.
+- **Pinia**: Gerenciamento de estado.
+- **TypeScript**: Tipagem estática.
+- **ESLint**: Linting e estilização.
+- **Vitest**: Testes unitários.
+- **Cypress**: Testes E2E.
+- **GitHub Actions**: CI/CD.
 
-#Como faço para executá-lo?
+## Como Executar
 
-Aqui estão as etapas necessárias para fazer o projeto funcionar:
+### Backend
 
-Você precisará do docker instalado.
+1. Clone este repositório.
+2. Navegue até o diretório do backend.
+3. Execute `docker-compose up`.
 
-- Clone este repositório.
-- Execute `docker-compose up`.
+### Frontend
 
-É isso :)
+1. Navegue até o diretório do frontend.
+2. Instale as dependências:
+   ```shell
+   pnpm install
+   ```
+3. Execute o servidor de desenvolvimento:
+  ```shell
+  pnpm dev
+  ```
+4. Para construir o projeto:
+  ```shell
+  pnpm build
+  ```
+5. Para executar os testes:
+  ```shell
+  pnpm test:unit
+  pnpm test:e2e
+  ```
+
+## Contribuindo
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests para melhorias ou correções.
+
+## Desenvolvedor
+<table>
+  <tr>
+    <td align="center">
+      <a href="#">
+        <img src="https://avatars.githubusercontent.com/u/8467131?v=4" width="100px;" alt="Foto do Rafael Vieira no GitHub"/><br>
+        <sub>
+          <b>Rafael Vieira</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <a href="https://www.linkedin.com/in/rafaelvieira-s/">
+      <img alt="linkedin" src="https://img.shields.io/twitter/url?label=Linkedin&logo=linkedin&style=social&url=https%3A%2F%2Fwww.linkedin.com%2Fin%2Frafaelvieira-s%2F">
+    </a>
+    <a href="https://medium.com/@rafael">
+      <img alt="medium" src="https://img.shields.io/twitter/url?label=Medium&logo=medium&style=social&url=https%3A%2F%2Fmedium.com%2F%40rafael.">
+    </a>
+    <a href = "mailto:rafaelrok25@gmail.com">
+      <img alt="gmail" src="https://img.shields.io/twitter/url?label=gmail&logo=gmail&style=social&url=https%3A%2F%2Fmail.google.com%2F">
+    </a>
+  </tr>
+</table>
+
+
+## 📝 Licença
+
+Esse projeto está sob licença. Veja o arquivo [LICENÇA](LICENSE.md) para mais detalhes.
+
+##  Versões do README
+
+[⬆ Voltar ao topo](#Introdução)<br>
