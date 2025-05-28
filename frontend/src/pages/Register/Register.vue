@@ -23,14 +23,35 @@
         </div>
         <v-card-actions class="justify-center">
           <div class="flex mb-2">
-            <v-btn elevation="5" variant="flat" @click="registerSocial('github')">
-              <i class="fa-brands fa-github-alt" style="color: #000000; font-size: 18px" />
+            <v-btn
+              elevation="5"
+              variant="flat"
+              @click="registerSocial('github')"
+            >
+              <i
+                class="fa-brands fa-github-alt"
+                style="color: #000000; font-size: 18px"
+              />
             </v-btn>
-            <v-btn elevation="5" variant="flat" @click="registerSocial('google')">
-              <i class="fa-brands fa-google" style="color: #ff0000; font-size: 18px" />
+            <v-btn
+              elevation="5"
+              variant="flat"
+              @click="registerSocial('google')"
+            >
+              <i
+                class="fa-brands fa-google"
+                style="color: #ff0000; font-size: 18px"
+              />
             </v-btn>
-            <v-btn elevation="5" variant="flat" @click="registerSocial('microsoft')">
-              <i class="fa-brands fa-microsoft" style="color: #2766d3; font-size: 18px" />
+            <v-btn
+              elevation="5"
+              variant="flat"
+              @click="registerSocial('microsoft')"
+            >
+              <i
+                class="fa-brands fa-microsoft"
+                style="color: #2766d3; font-size: 18px"
+              />
             </v-btn>
           </div>
         </v-card-actions>
@@ -138,17 +159,30 @@ import { routerPush } from '@/router.ts'
 import { api, isFetchError } from '@/services'
 import type { NewUser } from '@/services/api.ts'
 import { useUserStore } from '@/store/user.ts'
-import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider, OAuthProvider, getAuth } from 'firebase/auth'
-
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  OAuthProvider,
+  getAuth,
+} from 'firebase/auth'
 
 const visible = ref(false)
 const { updateUser } = useUserStore()
 
 const schema = yup.object({
   username: yup.string().required('Name is required'),
-  email: yup.string().required('Email is required').email('Invalid email format'),
-  password: yup.string().required('Password is required').max(16, 'Password must be at most 16 characters'),
-  repeatPassword: yup.string().required('Please repeat your password')
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Invalid email format'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .max(16, 'Password must be at most 16 characters'),
+  repeatPassword: yup
+    .string()
+    .required('Please repeat your password')
     .oneOf([yup.ref('password')], 'Passwords must match'),
 })
 
@@ -181,7 +215,8 @@ const rules = {
     return pattern.test(value) || 'Invalid e-mail format'
   },
   maxLength: (value: string) => value.length <= 16 || 'Max 16 characters',
-  passwordMatch: (value: string) => value === form.password || 'Passwords do not match',
+  passwordMatch: (value: string) =>
+    value === form.password || 'Passwords do not match',
 }
 
 const validateField = async (field: keyof typeof form) => {
@@ -189,11 +224,13 @@ const validateField = async (field: keyof typeof form) => {
 }
 
 const isFormValid = computed(() => {
-  return meta.value.valid &&
+  return (
+    meta.value.valid &&
     form.username &&
     form.email &&
     form.password &&
     form.repeatPassword
+  )
 })
 
 const register = handleSubmit(async (values) => {
@@ -209,39 +246,39 @@ const register = handleSubmit(async (values) => {
 })
 
 const registerSocial = async (provider: string) => {
-  let authProvider;
+  let authProvider
   switch (provider) {
     case 'google':
-      authProvider = new GoogleAuthProvider();
-      break;
+      authProvider = new GoogleAuthProvider()
+      break
     case 'github':
-      authProvider = new GithubAuthProvider();
-      break;
+      authProvider = new GithubAuthProvider()
+      break
     case 'microsoft':
-      authProvider = new OAuthProvider('microsoft.com');
-      break;
+      authProvider = new OAuthProvider('microsoft.com')
+      break
     default:
-      console.error('Unsupported provider');
-      return;
+      console.error('Unsupported provider')
+      return
   }
 
-  const auth = getAuth();
+  const auth = getAuth()
 
   try {
-    const result = await signInWithPopup(auth, authProvider);
-    const user = result.user;
+    const result = await signInWithPopup(auth, authProvider)
+    const user = result.user
     const response = await api.socialUsers.createUserSocial({
       user: {
         email: user.email,
         username: user.displayName,
         userProvideUid: user.uid,
-        provider: provider
-      }
-    });
+        provider: provider,
+      },
+    })
     updateUser(response.data.user)
     await routerPush('global-feed')
   } catch (error) {
-    console.error('Error during social login:', error);
+    console.error('Error during social login:', error)
   }
 }
 

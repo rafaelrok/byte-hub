@@ -66,14 +66,38 @@
 
         <v-card-actions class="justify-center">
           <div class="flex mb-2">
-            <v-btn elevation="5" variant="flat" class="transition-transform duration-300 hover:scale-110 hover:bg-gray-200" @click="handleSocialLogin('github')">
-              <i class="fa-brands fa-github-alt" style="color: #000000; font-size: 18px" />
+            <v-btn
+              elevation="5"
+              variant="flat"
+              class="transition-transform duration-300 hover:scale-110 hover:bg-gray-200"
+              @click="handleSocialLogin('github')"
+            >
+              <i
+                class="fa-brands fa-github-alt"
+                style="color: #000000; font-size: 18px"
+              />
             </v-btn>
-            <v-btn elevation="5" variant="flat" class="transition-transform duration-300 hover:scale-110 hover:bg-red-100" @click="handleSocialLogin('google')">
-              <i class="fa-brands fa-google" style="color: #ff0000; font-size: 18px" />
+            <v-btn
+              elevation="5"
+              variant="flat"
+              class="transition-transform duration-300 hover:scale-110 hover:bg-red-100"
+              @click="handleSocialLogin('google')"
+            >
+              <i
+                class="fa-brands fa-google"
+                style="color: #ff0000; font-size: 18px"
+              />
             </v-btn>
-            <v-btn elevation="5" variant="flat" class="transition-transform duration-300 hover:scale-110 hover:bg-blue-100" @click="handleSocialLogin('microsoft')">
-              <i class="fa-brands fa-microsoft" style="color: #2766d3; font-size: 18px" />
+            <v-btn
+              elevation="5"
+              variant="flat"
+              class="transition-transform duration-300 hover:scale-110 hover:bg-blue-100"
+              @click="handleSocialLogin('microsoft')"
+            >
+              <i
+                class="fa-brands fa-microsoft"
+                style="color: #2766d3; font-size: 18px"
+              />
             </v-btn>
           </div>
         </v-card-actions>
@@ -133,7 +157,10 @@ const isLoading = ref(false)
 const visible = ref(false)
 
 const schema = yup.object({
-  email: yup.string().required('Email is required').email('Invalid email format'),
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Invalid email format'),
   password: yup.string().required('Password is required'),
 })
 
@@ -148,19 +175,22 @@ async function login() {
 
   try {
     await schema.validate(form, { abortEarly: false })
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
     const result = await api.users.login({ user: form })
     updateUser(result.data.user)
     await routerPush('global-feed')
   } catch (error) {
     if (error instanceof yup.ValidationError) {
-      errors.value = error.inner.reduce((acc, err) => {
-        if (err.path) {
-          acc[err.path] = err.message
-        }
-        return acc
-      }, {} as Record<string, string>)
+      errors.value = error.inner.reduce(
+        (acc, err) => {
+          if (err.path) {
+            acc[err.path] = err.message
+          }
+          return acc
+        },
+        {} as Record<string, string>,
+      )
     } else if (isFetchError(error)) {
       errors.value = error.error?.errors || {
         message: 'Unknown error, please try again.',
@@ -193,7 +223,9 @@ async function handleSocialLogin(provider: string) {
         message: 'Erro ao iniciar login social. Por favor, tente novamente.',
       }
     } else {
-      errors.value = { message: 'Um erro inesperado ocorreu durante o login social.' }
+      errors.value = {
+        message: 'Um erro inesperado ocorreu durante o login social.',
+      }
     }
   } finally {
     isLoading.value = false
@@ -213,7 +245,9 @@ async function processSocialLoginResult(token: string) {
         message: 'Erro ao processar login social. Por favor, tente novamente.',
       }
     } else {
-      errors.value = { message: 'Um erro inesperado ocorreu ao processar o login social.' }
+      errors.value = {
+        message: 'Um erro inesperado ocorreu ao processar o login social.',
+      }
     }
   }
 }
@@ -236,5 +270,4 @@ async function processSocialLoginResult(token: string) {
 .error-messages li:not(:last-child) {
   margin-bottom: 0.5rem;
 }
-
 </style>
